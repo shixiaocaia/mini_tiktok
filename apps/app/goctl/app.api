@@ -1,0 +1,11 @@
+info(
+	title: mini_tiktok Service
+	desc: Https Services
+	author: "shixiaocaia"
+	email: "shixiaocaia@gmail.com"
+	version: "ver.0.1"
+)
+
+import (
+	"api/user.api"
+)

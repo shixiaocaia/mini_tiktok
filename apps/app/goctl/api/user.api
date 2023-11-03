@@ -1,0 +1,42 @@
+type HelloReq struct{
+    Name string `json:"name"`
+}
+
+type HelloResp struct{
+    StatusCode int `json:"status_code"`
+    StatusMsg string `json:"status_msg"`
+}
+
+type LoginReq struct{
+    Username string `json:"username"`
+    Password string `json:"password"`
+}
+
+type LoginResp struct{
+    StatusCode int `json:"status_code"`
+    StatusMsg string `json:"status_msg"`
+    UserID int `json:"user_id"`
+    Token string `json:"token"`
+}
+
+@server(
+    prefix: /douyin/user
+    group: user
+)
+
+service app{
+    @doc(
+        summary: "Hello request"
+        description: "Hello request"
+    )
+    @handler hello
+    get /hello (HelloReq) returns (HelloResp)
+
+
+    @doc(
+        summary: "Login request"
+        description: "Login request"
+    )
+    @handler login
+    post /login (LoginReq) returns (LoginResp)
+}
