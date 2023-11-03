@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UserRPC_Ping_FullMethodName = "/user.UserRPC/Ping"
+	UserRPC_Ping_FullMethodName     = "/user.UserRPC/Ping"
+	UserRPC_Register_FullMethodName = "/user.UserRPC/Register"
 )
 
 // UserRPCClient is the client API for UserRPC service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserRPCClient interface {
 	Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 }
 
 type userRPCClient struct {
@@ -46,11 +48,21 @@ func (c *userRPCClient) Ping(ctx context.Context, in *Request, opts ...grpc.Call
 	return out, nil
 }
 
+func (c *userRPCClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
+	out := new(RegisterResponse)
+	err := c.cc.Invoke(ctx, UserRPC_Register_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserRPCServer is the server API for UserRPC service.
 // All implementations must embed UnimplementedUserRPCServer
 // for forward compatibility
 type UserRPCServer interface {
 	Ping(context.Context, *Request) (*Response, error)
+	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	mustEmbedUnimplementedUserRPCServer()
 }
 
@@ -60,6 +72,9 @@ type UnimplementedUserRPCServer struct {
 
 func (UnimplementedUserRPCServer) Ping(context.Context, *Request) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedUserRPCServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
 func (UnimplementedUserRPCServer) mustEmbedUnimplementedUserRPCServer() {}
 
@@ -92,6 +107,24 @@ func _UserRPC_Ping_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserRPC_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserRPCServer).Register(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserRPC_Register_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserRPCServer).Register(ctx, req.(*RegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserRPC_ServiceDesc is the grpc.ServiceDesc for UserRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +135,10 @@ var UserRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _UserRPC_Ping_Handler,
+		},
+		{
+			MethodName: "Register",
+			Handler:    _UserRPC_Register_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -2,7 +2,7 @@
 package types
 
 type HelloReq struct {
-	Name string `json:"name", path:"name"`
+	Name string `json:"name"`
 }
 
 type HelloResp struct {
@@ -10,12 +10,12 @@ type HelloResp struct {
 	StatusMsg  string `json:"status_msg"`
 }
 
-type LoginReq struct {
+type RegisterReq struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type LoginResp struct {
+type RegisterResp struct {
 	StatusCode int    `json:"status_code"`
 	StatusMsg  string `json:"status_msg"`
 	UserID     int    `json:"user_id"`

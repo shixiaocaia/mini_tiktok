@@ -3,9 +3,11 @@ syntax = "proto3";
 package user;
 option go_package="./user";
 
+// goctl rpc protoc user.proto --go_out=../ --go-grpc_out=../  --zrpc_out=../
 
 service UserRPC {
   rpc Ping(Request) returns(Response);
+  rpc Register(RegisterRequest) returns(RegisterResponse);
 }
 
 message Request {
@@ -15,3 +17,16 @@ message Request {
 message Response {
   string pong = 1;
 }
+
+message RegisterRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message RegisterResponse {
+  int64 status_code = 1;
+  string status_msg = 2;
+  int64 user_id = 3;
+  string token = 4;
+}
+

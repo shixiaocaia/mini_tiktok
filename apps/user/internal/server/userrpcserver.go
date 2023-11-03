@@ -26,3 +26,8 @@ func (s *UserRPCServer) Ping(ctx context.Context, in *user.Request) (*user.Respo
 	l := logic.NewPingLogic(ctx, s.svcCtx)
 	return l.Ping(in)
 }
+
+func (s *UserRPCServer) Register(ctx context.Context, in *user.RegisterRequest) (*user.RegisterResponse, error) {
+	l := logic.NewRegisterLogic(ctx, s.svcCtx)
+	return l.Register(in)
+}

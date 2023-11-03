@@ -7,12 +7,12 @@ type HelloResp struct{
     StatusMsg string `json:"status_msg"`
 }
 
-type LoginReq struct{
+type RegisterReq struct{
     Username string `json:"username"`
     Password string `json:"password"`
 }
 
-type LoginResp struct{
+type RegisterResp struct{
     StatusCode int `json:"status_code"`
     StatusMsg string `json:"status_msg"`
     UserID int `json:"user_id"`
@@ -37,6 +37,6 @@ service app{
         summary: "Login request"
         description: "Login request"
     )
-    @handler login
-    post /login (LoginReq) returns (LoginResp)
+    @handler register
+    post /login (RegisterReq) returns (RegisterResp)
 }

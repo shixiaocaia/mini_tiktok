@@ -1,7 +1,14 @@
 # mini_tiktok
 learn go
 
-## 代码生成
+### 环境搭建
+```shell
+docker run --name mini_tiktok_mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql:latest
+
+docker run --name mini_tiktok-redis -p 6379:6379 -d redis:latest
+````
+
+###  代码生成
 ```shell
 goctl api go -api ./goctl/app.api  -dir .  -style gozero
 
