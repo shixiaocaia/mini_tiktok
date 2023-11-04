@@ -16,8 +16,8 @@ type RegisterReq struct {
 }
 
 type RegisterResp struct {
-	StatusCode int    `json:"status_code"`
+	StatusCode int64  `json:"status_code"`
 	StatusMsg  string `json:"status_msg"`
-	UserID     int    `json:"user_id"`
+	UserID     int64  `json:"user_id"`
 	Token      string `json:"token"`
 }

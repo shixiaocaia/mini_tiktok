@@ -25,6 +25,7 @@ func NewHelloLogic(ctx context.Context, svcCtx *svc.ServiceContext) *HelloLogic 
 }
 
 func (l *HelloLogic) Hello(req *types.HelloReq) (resp *types.HelloResp, err error) {
+	logx.Info("HelloLogic.Hello")
 	return &types.HelloResp{
 		StatusCode: http.StatusOK,
 		StatusMsg:  "Hello " + req.Name,

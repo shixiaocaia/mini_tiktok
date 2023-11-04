@@ -1,6 +1,7 @@
 package user
 
 import (
+	"github.com/gorilla/schema"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -12,7 +13,9 @@ import (
 func RegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.RegisterReq
-		if err := httpx.Parse(r, &req); err != nil {
+		decoder := schema.NewDecoder()
+		err := decoder.Decode(&req, r.URL.Query())
+		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}

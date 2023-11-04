@@ -1,3 +1,18 @@
 Name: app
 Host: 0.0.0.0
-Port: 8888
+Port: 8889
+Timeout: 100000
+
+Log:
+  ServiceName: app
+  Mode: console
+  Level: info
+  Encoding: plain
+
+UserRpcConf:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc
+  Timeout: 100000
+

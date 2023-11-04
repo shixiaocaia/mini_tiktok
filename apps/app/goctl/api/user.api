@@ -1,3 +1,5 @@
+syntax = "v1"
+
 type HelloReq struct{
     Name string `json:"name"`
 }
@@ -13,9 +15,9 @@ type RegisterReq struct{
 }
 
 type RegisterResp struct{
-    StatusCode int `json:"status_code"`
+    StatusCode int64 `json:"status_code"`
     StatusMsg string `json:"status_msg"`
-    UserID int `json:"user_id"`
+    UserID int64 `json:"user_id"`
     Token string `json:"token"`
 }
 
@@ -38,5 +40,5 @@ service app{
         description: "Login request"
     )
     @handler register
-    post /login (RegisterReq) returns (RegisterResp)
+    post /register (RegisterReq) returns (RegisterResp)
 }

@@ -50,6 +50,7 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		l.Logger.Errorf("error %+v", err)
 		return nil, err
 	}
+	l.Logger.Infof("res: %+v", res)
 	lastInsertId, err := res.LastInsertId()
 	if err != nil {
 		l.Logger.Errorf("error %+v", err)

@@ -1,11 +1,24 @@
 Name: user.rpc
 ListenOn: 0.0.0.0:8080
 Mode: dev
+Timeout: 10000
 
-#Etcd:
-#  Hosts:
-#  - 127.0.0.1:2379
-#  Key: user.rpc
+Etcd:
+  Hosts:
+  - 0.0.0.0:2379
+  Key: user.rpc
+
+Log:
+  Service: user.rpc
+  Mode: console
+  Encoding: plain
 
 Mysql:
   DataSource: "root:123456@tcp(124.220.156.104:3306)/tiktok?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
+
+Redis:
+  Host: 124.220.156.104:6379
+  Type: node
+  Pass:
+  Key:
+

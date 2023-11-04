@@ -1,3 +1,5 @@
+syntax = "v1"
+
 info(
 	title: mini_tiktok Service
 	desc: Https Services

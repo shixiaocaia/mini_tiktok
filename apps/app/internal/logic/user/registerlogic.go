@@ -5,6 +5,7 @@ import (
 
 	"mini_tiktok/apps/app/internal/svc"
 	"mini_tiktok/apps/app/internal/types"
+	pb "mini_tiktok/apps/user/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +25,18 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 }
 
 func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterResp, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	registerRsp, err := l.svcCtx.UserRpc.Register(l.ctx, &pb.RegisterRequest{
+		Username: req.Username,
+		Password: req.Password,
+	})
+	if err != nil {
+		l.Logger.Errorf("error %+v", err)
+		return nil, err
+	}
+	return &types.RegisterResp{
+		StatusCode: registerRsp.StatusCode,
+		StatusMsg:  registerRsp.StatusMsg,
+		UserID:     registerRsp.UserId,
+		Token:      registerRsp.Token,
+	}, nil
 }
