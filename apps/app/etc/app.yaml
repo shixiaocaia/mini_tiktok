@@ -12,7 +12,7 @@ Log:
 UserRpcConf:
   Etcd:
     Hosts:
-      - 127.0.0.1:2379
+      - 0.0.0.0:2379
     Key: user.rpc
   Timeout: 100000
 

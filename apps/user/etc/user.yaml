@@ -14,10 +14,10 @@ Log:
   Encoding: plain
 
 Mysql:
-  DataSource: "root:123456@tcp(124.220.156.104:3306)/tiktok?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
+  DataSource: "root:123456@tcp(8.217.124.133:3306)/tiktok?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
 
 Redis:
-  Host: 124.220.156.104:6379
+  Host: 8.217.124.133:6379
   Type: node
   Pass:
   Key:
