@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"github.com/pkg/errors"
+	"mini_tiktok/pkg/xerr"
 	model2 "mini_tiktok/pkg/xmodel"
 
 	"mini_tiktok/apps/user/internal/svc"
@@ -29,9 +30,9 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 	// Check if the username exists
 	userInfo, err := l.svcCtx.MysqlDB.UserModel.FindOneByUserName(l.ctx, in.GetUsername())
 	if err != nil && err != model2.ErrNotFound {
-		err = errors.New("DataBase error")
-		l.Logger.Errorf("error %+v", err)
-		return nil, err
+		userDbFindUserNameError := xerr.UserDbFindUserNameError.SetErrMsg("UserModel")
+		l.Logger.Errorf("error %+v", userDbFindUserNameError)
+		return nil, errors.Wrapf(userDbFindUserNameError, "Database error, username: %s, err: %v", in.GetUsername(), err)
 	}
 
 	if userInfo != nil {
