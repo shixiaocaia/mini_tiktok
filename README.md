@@ -10,7 +10,10 @@ docker run --name mini_tiktok-redis -p 6379:6379 -d redis:latest
 
 ###  代码生成
 ```shell
+# 使用本地goctl模板
 goctl api go -api ./goctl/app.api  -dir .  -style gozero
 
-goctl rpc protoc user.proto --go_out=../ --go-grpc_out=../  --zrpc_out=../
+goctl api go -api ./goctl/app.api  --home ../../../template/1.5.6 -dir .  -style gozero
+
+goctl rpc protoc user.proto  --home ../../../template/1.5.6 --go_out=../ --go-grpc_out=../  --zrpc_out=../
 ```

@@ -36,7 +36,7 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 	}
 
 	if userInfo != nil {
-		err = errors.New("Username already exists")
+		err = errors.Wrapf(xerr.UserNameExistsError, "User already registered, email: %s, err: %v", in.GetUsername(), err)
 		l.Logger.Errorf("error %+v", err)
 		return nil, err
 	}
@@ -60,9 +60,7 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 	// TODO: 生成token
 
 	return &user.RegisterResponse{
-		StatusCode: 200,
-		StatusMsg:  "success",
-		UserId:     lastInsertId,
-		Token:      "2333",
+		UserId: lastInsertId,
+		Token:  "2333",
 	}, nil
 }

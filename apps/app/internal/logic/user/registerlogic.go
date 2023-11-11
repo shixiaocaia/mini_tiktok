@@ -34,9 +34,7 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterRe
 		return nil, err
 	}
 	return &types.RegisterResp{
-		StatusCode: registerRsp.StatusCode,
-		StatusMsg:  registerRsp.StatusMsg,
-		UserID:     registerRsp.UserId,
-		Token:      registerRsp.Token,
+		UserID: registerRsp.UserId,
+		Token:  registerRsp.Token,
 	}, nil
 }
