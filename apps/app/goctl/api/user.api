@@ -1,5 +1,12 @@
 syntax = "v1"
 
+info(
+	title: "用户实例"
+	desc: "用户实例"
+	author: "shixiaocaia"
+	email: "shixiaocaia@gmail.com"
+	version: "v1"
+)
 type HelloReq struct{
     Name string `json:"name"`
 }
@@ -10,35 +17,23 @@ type HelloResp struct{
 }
 
 type RegisterReq struct{
-    Username string `json:"username"`
+    UserName string `json:"username"`
     Password string `json:"password"`
 }
 
 type RegisterResp struct{
-    StatusCode int64 `json:"status_code"`
-    StatusMsg string `json:"status_msg"`
     UserID int64 `json:"user_id"`
     Token string `json:"token"`
 }
 
-@server(
-    prefix: /douyin/user
-    group: user
-)
-
-service app{
-    @doc(
-        summary: "Hello request"
-        description: "Hello request"
-    )
-    @handler hello
-    get /hello (HelloReq) returns (HelloResp)
-
-
-    @doc(
-        summary: "Login request"
-        description: "Login request"
-    )
-    @handler register
-    post /register (RegisterReq) returns (RegisterResp)
+type LoginReq struct{
+    UserName string `json:"username"`
+    Password string `json:"password"`
 }
+
+type LoginResp struct{
+    AccessToken  string `json:"accessToken"`
+    AccessExpire int64  `json:"accessExpire"`
+    RefreshAfter int64  `json:"refreshAfter"`
+}
+

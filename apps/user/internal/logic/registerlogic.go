@@ -30,8 +30,8 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 	// Check if the username exists
 	userInfo, err := l.svcCtx.MysqlDB.UserModel.FindOneByUserName(l.ctx, in.GetUsername())
 	if err != nil && err != model2.ErrNotFound {
-		userDbFindUserNameError := xerr.UserDbFindUserNameError.SetErrMsg("UserModel")
-		l.Logger.Errorf("error %+v", userDbFindUserNameError)
+		userDbFindUserNameError := xerr.UserDbFindUserNameError.SetNewErrMsg("UserModel")
+		l.Logger.Errorf("User Register error %+v", userDbFindUserNameError)
 		return nil, errors.Wrapf(userDbFindUserNameError, "Database error, username: %s, err: %v", in.GetUsername(), err)
 	}
 
@@ -41,6 +41,8 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		return nil, err
 	}
 
+	// todo 密码位数校验
+
 	dbUser := &model2.User{
 		UserName: in.GetUsername(),
 		Password: in.GetPassword(),
@@ -48,14 +50,11 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 
 	res, err := l.svcCtx.MysqlDB.UserModel.Insert(l.ctx, dbUser)
 	if err != nil {
-		l.Logger.Errorf("error %+v", err)
-		return nil, err
+		l.Logger.Errorf("UserModel Insert %+v-%+v", xerr.UserInsertError, err)
+		return nil, xerr.UserInsertError
 	}
-	l.Logger.Infof("res: %+v", res)
-	lastInsertId, err := res.LastInsertId()
-	if err != nil {
-		l.Logger.Errorf("error %+v", err)
-	}
+
+	lastInsertId, _ := res.LastInsertId()
 
 	// TODO: 生成token
 

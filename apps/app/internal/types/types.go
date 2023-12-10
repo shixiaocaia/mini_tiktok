@@ -11,13 +11,22 @@ type HelloResp struct {
 }
 
 type RegisterReq struct {
-	Username string `json:"username"`
+	UserName string `json:"username"`
 	Password string `json:"password"`
 }
 
 type RegisterResp struct {
-	StatusCode int64  `json:"status_code"`
-	StatusMsg  string `json:"status_msg"`
-	UserID     int64  `json:"user_id"`
-	Token      string `json:"token"`
+	UserID int64  `json:"user_id"`
+	Token  string `json:"token"`
+}
+
+type LoginReq struct {
+	UserName string `json:"username"`
+	Password string `json:"password"`
+}
+
+type LoginResp struct {
+	AccessToken  string `json:"accessToken"`
+	AccessExpire int64  `json:"accessExpire"`
+	RefreshAfter int64  `json:"refreshAfter"`
 }

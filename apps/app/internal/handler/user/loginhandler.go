@@ -1,7 +1,6 @@
 package user
 
 import (
-	"github.com/gorilla/schema"
 	"mini_tiktok/pkg/common/result"
 	"net/http"
 
@@ -11,18 +10,16 @@ import (
 	"mini_tiktok/apps/app/internal/types"
 )
 
-func HelloHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func LoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.HelloReq
-		decoder := schema.NewDecoder()
-		err := decoder.Decode(&req, r.URL.Query())
-		if err != nil {
+		var req types.LoginReq
+		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := user.NewHelloLogic(r.Context(), svcCtx)
-		resp, err := l.Hello(&req)
+		l := user.NewLoginLogic(r.Context(), svcCtx)
+		resp, err := l.Login(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

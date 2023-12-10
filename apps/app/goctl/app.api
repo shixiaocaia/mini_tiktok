@@ -5,9 +5,50 @@ info(
 	desc: Https Services
 	author: "shixiaocaia"
 	email: "shixiaocaia@gmail.com"
-	version: "ver.0.1"
+	version: "v1"
 )
 
 import (
 	"api/user.api"
 )
+
+//============================> userService <============================
+// no need login
+@server(
+	prefix: /douyin/user
+	group: user
+)
+
+service app{
+	@doc(
+		summary: "Hello request"
+		description: "Hello request"
+	)
+	@handler hello
+	get /hello (HelloReq) returns (HelloResp)
+
+	@doc(
+		summary: "Login request"
+		description: "Login request"
+	)
+	@handler register
+	post /register (RegisterReq) returns (RegisterResp)
+
+	@doc(
+		summary: "Login request"
+		description: "Login request"
+	)
+	@handler login
+	post /login (LoginReq) returns (LoginResp)
+}
+
+// need login
+@server(
+	prefix: /douyin/user
+	group: user
+	jwt: JwtAuth
+)
+
+service app{
+
+}
