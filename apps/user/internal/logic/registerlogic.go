@@ -28,15 +28,15 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 
 func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterResponse, error) {
 	// Check if the username exists
-	userInfo, err := l.svcCtx.MysqlDB.UserModel.FindOneByUserName(l.ctx, in.GetUsername())
+	userInfo, err := l.svcCtx.MysqlDB.UserModel.FindOneByUserName(l.ctx, in.Username)
 	if err != nil && err != model2.ErrNotFound {
 		userDbFindUserNameError := xerr.UserDbFindUserNameError.SetNewErrMsg("UserModel")
 		l.Logger.Errorf("User Register error %+v", userDbFindUserNameError)
-		return nil, errors.Wrapf(userDbFindUserNameError, "Database error, username: %s, err: %v", in.GetUsername(), err)
+		return nil, errors.Wrapf(userDbFindUserNameError, "Database error, username: %s, err: %v", in.Username, err)
 	}
 
 	if userInfo != nil {
-		err = errors.Wrapf(xerr.UserNameExistsError, "User already registered, email: %s, err: %v", in.GetUsername(), err)
+		err = errors.Wrapf(xerr.UserNameExistsError, "User already registered, email: %s, err: %v", in.Username, err)
 		l.Logger.Errorf("error %+v", err)
 		return nil, err
 	}
@@ -44,8 +44,8 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 	// todo 密码位数校验
 
 	dbUser := &model2.User{
-		UserName: in.GetUsername(),
-		Password: in.GetPassword(),
+		UserName: in.Username,
+		Password: in.Password,
 	}
 
 	res, err := l.svcCtx.MysqlDB.UserModel.Insert(l.ctx, dbUser)

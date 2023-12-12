@@ -8,6 +8,7 @@ option go_package="./user";
 service UserRPC {
   rpc Ping(Request) returns(Response);
   rpc Register(RegisterRequest) returns(RegisterResponse);
+  rpc Login(LoginReq) returns(LoginResp);
 }
 
 message Request {
@@ -28,3 +29,23 @@ message RegisterResponse {
   string token = 4;
 }
 
+message LoginReq{
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResp{
+  string access_token = 1;
+  int64 access_expire = 2;
+  int64 refresh_after = 3;
+}
+
+message GenerateTokenReq {
+  int64 userId = 1;
+
+}
+message GenerateTokenResp {
+  string accessToken = 1;
+  int64  accessExpire = 2;
+  int64  refreshAfter = 3;
+}

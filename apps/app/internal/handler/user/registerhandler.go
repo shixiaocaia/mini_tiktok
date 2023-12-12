@@ -1,7 +1,6 @@
 package user
 
 import (
-	"github.com/gorilla/schema"
 	"mini_tiktok/pkg/common/result"
 	"net/http"
 
@@ -14,9 +13,7 @@ import (
 func RegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.RegisterReq
-		decoder := schema.NewDecoder()
-		err := decoder.Decode(&req, r.URL.Query())
-		if err != nil {
+		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}

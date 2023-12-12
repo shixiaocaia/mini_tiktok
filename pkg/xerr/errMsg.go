@@ -11,6 +11,7 @@ var (
 	UserInsertError         *CodeError
 	UserNotExistedError     *CodeError
 	UserPasswordError       *CodeError
+	UserGenerateTokenError  *CodeError
 )
 
 func init() {
@@ -27,6 +28,7 @@ func init() {
 	message[USER_INSERT_ERROR] = "Insert error"
 	message[USER_NOT_EXISTED_ERROR] = "User not existed"
 	message[USER_PASSWORD_ERROR] = "Password error"
+	message[USER_GENERATE_TOKEN_ERROR] = "Generate token error"
 
 	CommonServerError = NewErrCode(SERVER_COMMON_ERROR)
 	UserRegisterError = NewErrCode(USER_REGISTER_ERROR)
@@ -35,6 +37,7 @@ func init() {
 	UserInsertError = NewErrCode(USER_INSERT_ERROR)
 	UserNotExistedError = NewErrCode(USER_NOT_EXISTED_ERROR)
 	UserPasswordError = NewErrCode(USER_PASSWORD_ERROR)
+	UserGenerateTokenError = NewErrCode(USER_GENERATE_TOKEN_ERROR)
 }
 
 func MapErrMsg(errcode uint32) string {

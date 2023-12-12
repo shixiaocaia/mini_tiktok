@@ -32,8 +32,8 @@ type LoginReq struct{
 }
 
 type LoginResp struct{
-    AccessToken  string `json:"accessToken"`
-    AccessExpire int64  `json:"accessExpire"`
-    RefreshAfter int64  `json:"refreshAfter"`
+    AccessToken  string `json:"access_token"`
+    AccessExpire int64  `json:"access_expire"`
+    RefreshAfter int64  `json:"refresh_after"`
 }
 

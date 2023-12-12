@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"mini_tiktok/apps/user/user"
 
 	"mini_tiktok/apps/app/internal/svc"
 	"mini_tiktok/apps/app/internal/types"
@@ -24,7 +25,18 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
-	// todo: add your logic here and delete this line
+	loginResp, err := l.svcCtx.UserRpc.Login(l.ctx, &user.LoginReq{
+		Username: req.UserName,
+		Password: req.Password,
+	})
 
-	return
+	if err != nil {
+		l.Logger.Errorf("error %+v", err)
+		return nil, err
+	}
+	return &types.LoginResp{
+		AccessToken:  loginResp.AccessToken,
+		AccessExpire: loginResp.AccessExpire,
+		RefreshAfter: loginResp.RefreshAfter,
+	}, nil
 }

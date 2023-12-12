@@ -39,7 +39,17 @@ func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 	if userInfo.Password != in.GetPassword() {
 		return nil, xerr.UserPasswordError
 	}
+
+	generateToken, err := l.svcCtx.Service.GenerateToken(&user.GenerateTokenReq{
+		UserId: userInfo.Id,
+	})
+	if err != nil {
+		return nil, xerr.UserGenerateTokenError
+	}
+
 	return &user.LoginResp{
-		AccessExpire: 10,
+		AccessToken:  generateToken.AccessToken,
+		AccessExpire: generateToken.AccessExpire,
+		RefreshAfter: generateToken.RefreshAfter,
 	}, nil
 }

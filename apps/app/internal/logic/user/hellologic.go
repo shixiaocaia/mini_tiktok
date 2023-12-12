@@ -30,6 +30,4 @@ func (l *HelloLogic) Hello(req *types.HelloReq) (resp *types.HelloResp, err erro
 		StatusCode: http.StatusOK,
 		StatusMsg:  "Hello " + req.Name,
 	}, nil
-
-	return
 }
