@@ -9,14 +9,30 @@ service UserRPC {
   rpc Ping(Request) returns(Response);
   rpc Register(RegisterRequest) returns(RegisterResponse);
   rpc Login(LoginReq) returns(LoginResp);
+  rpc GetUserInfo(GetUserInfoReq) returns(GetUserInfoResp);
 }
+
+message User {
+  int64 id = 1;
+  string name = 2;
+  int64 follow_count = 3;
+  int64 follower_count = 4;
+  string avatar = 5;
+  string background_image = 6;
+  string signature = 7;
+  int64 total_favorited = 8;
+  int64 favorite_count = 9;
+}
+
 
 message Request {
   string ping = 1;
 }
 
 message Response {
-  string pong = 1;
+  int32  status_code = 1;
+  string status_msg = 2;
+  string pong = 3;
 }
 
 message RegisterRequest {
@@ -25,6 +41,8 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
+  int32  status_code = 1;
+  string status_msg = 2;
   int64 user_id = 3;
   string token = 4;
 }
@@ -35,9 +53,11 @@ message LoginReq{
 }
 
 message LoginResp{
-  string access_token = 1;
-  int64 access_expire = 2;
-  int64 refresh_after = 3;
+  int32  status_code = 1;
+  string status_msg = 2;
+  string access_token = 3;
+  int64 access_expire = 4;
+  int64 refresh_after = 5;
 }
 
 message GenerateTokenReq {
@@ -48,4 +68,14 @@ message GenerateTokenResp {
   string accessToken = 1;
   int64  accessExpire = 2;
   int64  refreshAfter = 3;
+}
+
+message GetUserInfoReq{
+  int64 userId = 1;
+}
+
+message GetUserInfoResp{
+  int32  status_code = 1;
+  string status_msg = 2;
+  User user = 3;
 }

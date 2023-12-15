@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UserRPC_Ping_FullMethodName     = "/user.UserRPC/Ping"
-	UserRPC_Register_FullMethodName = "/user.UserRPC/Register"
-	UserRPC_Login_FullMethodName    = "/user.UserRPC/Login"
+	UserRPC_Ping_FullMethodName        = "/user.UserRPC/Ping"
+	UserRPC_Register_FullMethodName    = "/user.UserRPC/Register"
+	UserRPC_Login_FullMethodName       = "/user.UserRPC/Login"
+	UserRPC_GetUserInfo_FullMethodName = "/user.UserRPC/GetUserInfo"
 )
 
 // UserRPCClient is the client API for UserRPC service.
@@ -31,6 +32,7 @@ type UserRPCClient interface {
 	Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
+	GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error)
 }
 
 type userRPCClient struct {
@@ -68,6 +70,15 @@ func (c *userRPCClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.Ca
 	return out, nil
 }
 
+func (c *userRPCClient) GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error) {
+	out := new(GetUserInfoResp)
+	err := c.cc.Invoke(ctx, UserRPC_GetUserInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserRPCServer is the server API for UserRPC service.
 // All implementations must embed UnimplementedUserRPCServer
 // for forward compatibility
@@ -75,6 +86,7 @@ type UserRPCServer interface {
 	Ping(context.Context, *Request) (*Response, error)
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Login(context.Context, *LoginReq) (*LoginResp, error)
+	GetUserInfo(context.Context, *GetUserInfoReq) (*GetUserInfoResp, error)
 	mustEmbedUnimplementedUserRPCServer()
 }
 
@@ -90,6 +102,9 @@ func (UnimplementedUserRPCServer) Register(context.Context, *RegisterRequest) (*
 }
 func (UnimplementedUserRPCServer) Login(context.Context, *LoginReq) (*LoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedUserRPCServer) GetUserInfo(context.Context, *GetUserInfoReq) (*GetUserInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserInfo not implemented")
 }
 func (UnimplementedUserRPCServer) mustEmbedUnimplementedUserRPCServer() {}
 
@@ -158,6 +173,24 @@ func _UserRPC_Login_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserRPC_GetUserInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserRPCServer).GetUserInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserRPC_GetUserInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserRPCServer).GetUserInfo(ctx, req.(*GetUserInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserRPC_ServiceDesc is the grpc.ServiceDesc for UserRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +209,10 @@ var UserRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _UserRPC_Login_Handler,
+		},
+		{
+			MethodName: "GetUserInfo",
+			Handler:    _UserRPC_GetUserInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

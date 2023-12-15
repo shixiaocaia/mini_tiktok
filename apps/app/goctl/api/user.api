@@ -7,6 +7,20 @@ info(
 	email: "shixiaocaia@gmail.com"
 	version: "v1"
 )
+
+type User struct{
+    id int64 `json:"id"`
+    name string `json:"name"`
+    follow_count int64 `json:"follow_count"`
+    follower_count int64 `json:"follower_count"`
+    avatar string `json:"avatar"`
+    background_image string `json:"background_image"`
+    signature string `json:"signature"`
+    total_favorited int64 `json:"total_favorited"`
+    favorite_count int64 `json:"favorited_count"`
+}
+
+
 type HelloReq struct{
     Name string `json:"name"`
 }
@@ -22,6 +36,8 @@ type RegisterReq struct{
 }
 
 type RegisterResp struct{
+    StatusCode int `json:"status_code"`
+    StatusMsg string `json:"status_msg"`
     UserID int64 `json:"user_id"`
     Token string `json:"token"`
 }
@@ -32,8 +48,20 @@ type LoginReq struct{
 }
 
 type LoginResp struct{
+    StatusCode int `json:"status_code"`
+    StatusMsg string `json:"status_msg"`
     AccessToken  string `json:"access_token"`
     AccessExpire int64  `json:"access_expire"`
     RefreshAfter int64  `json:"refresh_after"`
 }
 
+type UserInfoReq struct{
+    UserID int64 `json:"user_id"`
+    Token string `json:"token"`
+}
+
+type UserInfoResp struct{
+    StatusCode int `json:"status_code"`
+    StatusMsg string `json:"status_msg"`
+    User User `json:"user"`
+}

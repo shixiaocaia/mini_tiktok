@@ -50,5 +50,10 @@ service app{
 )
 
 service app{
-
+	@doc(
+		summary: "UserInfo"
+		description: "UserInfo request"
+	)
+	@handler detail
+	get / (UserInfoReq) returns (UserInfoResp)
 }
