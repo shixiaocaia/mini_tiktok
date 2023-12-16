@@ -9,15 +9,16 @@ info(
 )
 
 type User struct{
-    id int64 `json:"id"`
-    name string `json:"name"`
-    follow_count int64 `json:"follow_count"`
-    follower_count int64 `json:"follower_count"`
-    avatar string `json:"avatar"`
-    background_image string `json:"background_image"`
-    signature string `json:"signature"`
-    total_favorited int64 `json:"total_favorited"`
-    favorite_count int64 `json:"favorited_count"`
+    Id int64 `json:"id"`
+    Name string `json:"name"`
+    FollowCount int64 `json:"follow_count"`
+    FollowerCount int64 `json:"follower_count"`
+    Avatar string `json:"avatar"`
+    BackgroundImage string `json:"background_image"`
+    Signature string `json:"signature"`
+    TotalFavorited int64 `json:"total_favorited"`
+    FavoriteCount int64 `json:"favorited_count"`
+    WorkCount int64 `json:"work_count"`
 }
 
 
@@ -51,8 +52,6 @@ type LoginResp struct{
     StatusCode int `json:"status_code"`
     StatusMsg string `json:"status_msg"`
     AccessToken  string `json:"access_token"`
-    AccessExpire int64  `json:"access_expire"`
-    RefreshAfter int64  `json:"refresh_after"`
 }
 
 type UserInfoReq struct{

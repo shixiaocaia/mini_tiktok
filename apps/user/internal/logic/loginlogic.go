@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"golang.org/x/crypto/bcrypt"
 	"mini_tiktok/pkg/xerr"
 	model2 "mini_tiktok/pkg/xmodel"
 
@@ -36,7 +37,9 @@ func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 		return nil, xerr.UserNotExistedError
 	}
 
-	if userInfo.Password != in.GetPassword() {
+	err = bcrypt.CompareHashAndPassword([]byte(userInfo.Password), []byte(in.Password))
+	if err != nil {
+		l.Logger.Errorf("User Login error %+v", xerr.UserPasswordError)
 		return nil, xerr.UserPasswordError
 	}
 
@@ -48,8 +51,6 @@ func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 	}
 
 	return &user.LoginResp{
-		AccessToken:  generateToken.AccessToken,
-		AccessExpire: generateToken.AccessExpire,
-		RefreshAfter: generateToken.RefreshAfter,
+		AccessToken: generateToken.AccessToken,
 	}, nil
 }

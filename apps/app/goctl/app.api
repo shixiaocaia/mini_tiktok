@@ -46,7 +46,7 @@ service app{
 @server(
 	prefix: /douyin/user
 	group: user
-	jwt: JwtAuth
+	middleware: JwtAuth
 )
 
 service app{

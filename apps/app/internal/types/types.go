@@ -2,15 +2,16 @@
 package types
 
 type User struct {
-	Id               int64  `json:"id"`
-	Name             string `json:"name"`
-	Follow_count     int64  `json:"follow_count"`
-	Follower_count   int64  `json:"follower_count"`
-	Avatar           string `json:"avatar"`
-	Background_image string `json:"background_image"`
-	Signature        string `json:"signature"`
-	Total_favorited  int64  `json:"total_favorited"`
-	Favorite_count   int64  `json:"favorited_count"`
+	Id              int64  `json:"id"`
+	Name            string `json:"name"`
+	FollowCount     int64  `json:"follow_count"`
+	FollowerCount   int64  `json:"follower_count"`
+	Avatar          string `json:"avatar"`
+	BackgroundImage string `json:"background_image"`
+	Signature       string `json:"signature"`
+	TotalFavorited  int64  `json:"total_favorited"`
+	FavoriteCount   int64  `json:"favorited_count"`
+	WorkCount       int64  `json:"work_count"`
 }
 
 type HelloReq struct {
@@ -40,11 +41,9 @@ type LoginReq struct {
 }
 
 type LoginResp struct {
-	StatusCode   int    `json:"status_code"`
-	StatusMsg    string `json:"status_msg"`
-	AccessToken  string `json:"access_token"`
-	AccessExpire int64  `json:"access_expire"`
-	RefreshAfter int64  `json:"refresh_after"`
+	StatusCode  int    `json:"status_code"`
+	StatusMsg   string `json:"status_msg"`
+	AccessToken string `json:"access_token"`
 }
 
 type UserInfoReq struct {

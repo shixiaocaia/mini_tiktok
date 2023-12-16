@@ -2,6 +2,8 @@ package result
 
 import (
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/rest/httpx"
+	"net/http"
 	"reflect"
 )
 
@@ -45,19 +47,6 @@ func Error(errCode uint32, errMsg string) *ResponseErrorBean {
 	return &ResponseErrorBean{errCode, errMsg}
 }
 
-//func (hr *ResponseSuccessBean) MarshalJSON() ([]byte, error) {
-//	// 创建一个map来存储所有字段
-//	result := map[string]interface{}{
-//		"code": hr.Code,
-//		"msg":  hr.Msg,
-//	}
-//
-//	// 反射获取Payload的字段并添加到map中
-//	val := reflect.ValueOf(hr.Data).Elem()
-//	typ := reflect.TypeOf(hr.Data).Elem()
-//	for i := 0; i < val.NumField(); i++ {
-//		result[typ.Field(i).Name] = val.Field(i).Interface()
-//	}
-//
-//	return json.Marshal(result)
-//}
+func JwtUnauthorizedResult(w http.ResponseWriter, r *http.Request, err error) {
+	httpx.WriteJson(w, http.StatusBadRequest, Error(401, err.Error()))
+}

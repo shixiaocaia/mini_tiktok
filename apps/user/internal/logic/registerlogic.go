@@ -10,6 +10,7 @@ import (
 	"mini_tiktok/apps/user/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type RegisterLogic struct {
@@ -37,15 +38,19 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 
 	if userInfo != nil {
 		err = errors.Wrapf(xerr.UserNameExistsError, "User already registered, email: %s, err: %v", in.Username, err)
-		l.Logger.Errorf("error %+v", err)
+		l.Logger.Errorf("User Register error %+v", err)
 		return nil, err
 	}
 
-	// todo 密码位数校验
-
+	if in.Username == "" || in.Password == "" {
+		err = errors.Wrapf(xerr.UserRegisterError, "User Register error, username: %s, password: %s, ", in.Username, in.Password)
+		l.Logger.Errorf("User Register error %+v", err)
+		return nil, err
+	}
+	hashPassword, _ := bcrypt.GenerateFromPassword([]byte(in.Password), bcrypt.DefaultCost)
 	dbUser := &model2.User{
 		UserName: in.Username,
-		Password: in.Password,
+		Password: string(hashPassword),
 	}
 
 	res, err := l.svcCtx.MysqlDB.UserModel.Insert(l.ctx, dbUser)
@@ -53,13 +58,17 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		l.Logger.Errorf("UserModel Insert %+v-%+v", xerr.UserInsertError, err)
 		return nil, xerr.UserInsertError
 	}
-
 	lastInsertId, _ := res.LastInsertId()
 
-	// TODO: 生成token
+	generateToken, err := l.svcCtx.Service.GenerateToken(&user.GenerateTokenReq{
+		UserId: lastInsertId,
+	})
+	if err != nil {
+		return nil, xerr.UserGenerateTokenError
+	}
 
 	return &user.RegisterResponse{
 		UserId: lastInsertId,
-		Token:  "2333",
+		Token:  generateToken.AccessToken,
 	}, nil
 }
