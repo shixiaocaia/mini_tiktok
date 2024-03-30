@@ -1,14 +1,15 @@
 package user
 
 import (
-	"github.com/gorilla/schema"
-	"mini_tiktok/pkg/common/result"
 	"net/http"
 
-	"github.com/zeromicro/go-zero/rest/httpx"
+	"github.com/gorilla/schema"
+
 	"mini_tiktok/apps/app/internal/logic/user"
 	"mini_tiktok/apps/app/internal/svc"
 	"mini_tiktok/apps/app/internal/types"
+
+	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
 func HelloHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
@@ -23,6 +24,10 @@ func HelloHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := user.NewHelloLogic(r.Context(), svcCtx)
 		resp, err := l.Hello(&req)
-		result.HttpResult(r, w, resp, err)
+		if err != nil {
+			httpx.ErrorCtx(r.Context(), w, err)
+		} else {
+			httpx.OkJsonCtx(r.Context(), w, resp)
+		}
 	}
 }

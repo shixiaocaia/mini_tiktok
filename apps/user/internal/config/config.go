@@ -5,8 +5,11 @@ import "github.com/zeromicro/go-zero/zrpc"
 type Config struct {
 	zrpc.RpcServerConf
 	JwtAuth struct {
-		AccessSecret string
-		AccessExpire int64
+		AccessSecret  string
+		AccessExpire  int64
+		RefreshSecret string
+		RefreshExpire int64
+		RefreshAfter  int64
 	}
 
 	Mysql struct {

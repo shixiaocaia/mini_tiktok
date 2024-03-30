@@ -2,14 +2,15 @@ package logic
 
 import (
 	"context"
-	"golang.org/x/crypto/bcrypt"
-	"mini_tiktok/pkg/xerr"
-	model2 "mini_tiktok/pkg/xmodel"
 
+	"mini_tiktok/apps/user/internal/code"
 	"mini_tiktok/apps/user/internal/svc"
 	"mini_tiktok/apps/user/user"
+	"mini_tiktok/pkg/jwt"
+	model2 "mini_tiktok/pkg/xmodel"
 
 	"github.com/zeromicro/go-zero/core/logx"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type LoginLogic struct {
@@ -29,28 +30,31 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 	userInfo, err := l.svcCtx.MysqlDB.UserModel.FindOneByUserName(l.ctx, in.GetUsername())
 	if err != nil && err != model2.ErrNotFound {
-		userLoginError := xerr.UserDbFindUserNameError.SetNewErrMsg("UserModel")
-		l.Logger.Errorf("User Login error %+v", userLoginError)
-		return nil, userLoginError
+		logx.Errorf("FindOneByUserName userName: %v error %+v", in.GetUsername(), err)
+		return nil, err
 	}
 	if userInfo == nil {
-		return nil, xerr.UserNotExistedError
+		return nil, code.UserNotExist
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(userInfo.Password), []byte(in.Password))
 	if err != nil {
-		l.Logger.Errorf("User Login error %+v", xerr.UserPasswordError)
-		return nil, xerr.UserPasswordError
+		return nil, code.UserPasswordError
 	}
 
-	generateToken, err := l.svcCtx.Service.GenerateToken(&user.GenerateTokenReq{
-		UserId: userInfo.Id,
+	token, err := jwt.BuildTokens(jwt.TokenOptions{
+		AccessSecret: l.svcCtx.Config.JwtAuth.AccessSecret,
+		AccessExpire: l.svcCtx.Config.JwtAuth.AccessExpire,
+		Fields: map[string]interface{}{
+			"userId": userInfo.Id,
+		},
 	})
 	if err != nil {
-		return nil, xerr.UserGenerateTokenError
+		logx.Errorf("BuildTokens %+v", err)
+		return nil, err
 	}
 
 	return &user.LoginResp{
-		AccessToken: generateToken.AccessToken,
+		AccessToken: token.AccessToken,
 	}, nil
 }

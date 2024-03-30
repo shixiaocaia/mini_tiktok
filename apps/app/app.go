@@ -6,11 +6,7 @@ import (
 	"mini_tiktok/apps/app/internal/config"
 	"mini_tiktok/apps/app/internal/handler"
 	"mini_tiktok/apps/app/internal/svc"
-<<<<<<< HEAD
 	"mini_tiktok/pkg/xcode"
-=======
-	"mini_tiktok/pkg/common/result"
->>>>>>> 4222557ea248bd679896f11fdfec79a333ccad96
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -25,7 +21,7 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf, rest.WithUnauthorizedCallback(result.JwtUnauthorizedResult))
+	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)

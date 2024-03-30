@@ -3,6 +3,13 @@ ListenOn: 0.0.0.0:8080
 Mode: dev
 Timeout: 10000
 
+JwtAuth:
+  AccessSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  AccessExpire: 604800
+  RefreshSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  RefreshExpire: 2592000
+  RefreshAfter: 604800
+
 Etcd:
   Hosts:
   - 0.0.0.0:2379
@@ -12,6 +19,7 @@ Log:
   Service: user.rpc
   Mode: console
   Encoding: plain
+  Level: debug
 
 Mysql:
   DataSource: "root:tiktok_mysql@tcp(8.217.124.133:3306)/tiktok?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
@@ -22,6 +30,4 @@ Redis:
   Pass:
   Key:
 
-JwtAuth:
-  AccessSecret: ae0536f9-6450-4606-8e13-5a19ed505da0
-  AccessExpire: 31536000
+

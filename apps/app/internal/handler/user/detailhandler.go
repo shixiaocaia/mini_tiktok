@@ -1,13 +1,14 @@
 package user
 
 import (
-	"mini_tiktok/pkg/common/result"
 	"net/http"
 	"strconv"
 
 	"mini_tiktok/apps/app/internal/logic/user"
 	"mini_tiktok/apps/app/internal/svc"
 	"mini_tiktok/apps/app/internal/types"
+
+	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
 func DetailHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
@@ -22,6 +23,10 @@ func DetailHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		req.UserID, _ = strconv.ParseInt(userId, 10, 64)
 		l := user.NewDetailLogic(r.Context(), svcCtx)
 		resp, err := l.Detail(&req)
-		result.HttpResult(r, w, resp, err)
+		if err != nil {
+			httpx.ErrorCtx(r.Context(), w, err)
+		} else {
+			httpx.OkJsonCtx(r.Context(), w, resp)
+		}
 	}
 }

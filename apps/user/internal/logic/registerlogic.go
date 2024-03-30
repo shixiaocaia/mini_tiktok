@@ -7,6 +7,7 @@ import (
 	"mini_tiktok/apps/user/internal/code"
 	"mini_tiktok/apps/user/internal/svc"
 	"mini_tiktok/apps/user/user"
+	"mini_tiktok/pkg/jwt"
 
 	"github.com/zeromicro/go-zero/core/logx"
 	"golang.org/x/crypto/bcrypt"
@@ -28,8 +29,8 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 
 func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterResponse, error) {
 	// Check if the username is empty
-	if in.GetUsername() == "" {
-		return nil, code.RegisterNameEmpty
+	if in.GetUsername() == "" || in.GetPassword() == "" {
+		return nil, code.RegisterInfoEmpty
 	}
 
 	// Check if the username exists
@@ -44,11 +45,6 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		return nil, code.UserNameExists
 	}
 
-	if in.Username == "" || in.Password == "" {
-		err = errors.Wrapf(xerr.UserRegisterError, "User Register error, username: %s, password: %s, ", in.Username, in.Password)
-		l.Logger.Errorf("User Register error %+v", err)
-		return nil, err
-	}
 	hashPassword, _ := bcrypt.GenerateFromPassword([]byte(in.Password), bcrypt.DefaultCost)
 	dbUser := &model2.User{
 		UserName: in.Username,
@@ -57,16 +53,21 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 
 	res, err := l.svcCtx.MysqlDB.UserModel.Insert(l.ctx, dbUser)
 	if err != nil {
-		l.Logger.Errorf("UserModel Insert %+v-%+v", xerr.UserInsertError, err)
-		return nil, xerr.UserInsertError
+		logx.Errorf("UserModel Insert %+v", err)
+		return nil, err
 	}
 	lastInsertId, _ := res.LastInsertId()
 
-	generateToken, err := l.svcCtx.Service.GenerateToken(&user.GenerateTokenReq{
-		UserId: lastInsertId,
+	generateToken, err := jwt.BuildTokens(jwt.TokenOptions{
+		AccessSecret: l.svcCtx.Config.JwtAuth.AccessSecret,
+		AccessExpire: l.svcCtx.Config.JwtAuth.AccessExpire,
+		Fields: map[string]interface{}{
+			"userId": lastInsertId,
+		},
 	})
 	if err != nil {
-		return nil, xerr.UserGenerateTokenError
+		logx.Errorf("Register req: %v BuildTokens %+v", in, err)
+		return nil, err
 	}
 
 	return &user.RegisterResponse{

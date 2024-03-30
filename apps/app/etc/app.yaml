@@ -2,11 +2,12 @@ Name: app
 Host: 0.0.0.0
 Port: 8889
 Timeout: 100000
+Mode: dev
 
 Log:
   ServiceName: app
   Mode: console
-  Level: info
+  Level: debug
   Encoding: plain
 
 JwtAuth:

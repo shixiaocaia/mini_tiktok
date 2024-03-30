@@ -2,9 +2,9 @@ package logic
 
 import (
 	"context"
+	"mini_tiktok/apps/user/internal/code"
 	"mini_tiktok/apps/user/internal/svc"
 	"mini_tiktok/apps/user/user"
-	"mini_tiktok/pkg/xerr"
 	"mini_tiktok/pkg/xmodel"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -33,7 +33,7 @@ func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoReq) (*user.GetUserIn
 
 	if userInfo == nil {
 		l.logger.Info("user not found")
-		return nil, xerr.UserNotExistedError
+		return nil, code.UserNotExist
 	}
 
 	return &user.GetUserInfoResp{User: ToUserInfo(userInfo)}, nil

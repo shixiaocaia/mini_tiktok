@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"mini_tiktok/pkg/common/interceptor"
 
 	"mini_tiktok/apps/user/internal/config"
 	"mini_tiktok/apps/user/internal/server"
@@ -38,8 +37,6 @@ func main() {
 	s.AddUnaryInterceptors(interceptors.ServerErrorInterceptor())
 
 	defer s.Stop()
-
-	s.AddUnaryInterceptors(interceptor.LoggerInterceptor)
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()
