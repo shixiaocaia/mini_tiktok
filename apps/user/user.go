@@ -8,6 +8,7 @@ import (
 	"mini_tiktok/apps/user/internal/server"
 	"mini_tiktok/apps/user/internal/svc"
 	"mini_tiktok/apps/user/user"
+	"mini_tiktok/pkg/interceptors"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -32,6 +33,9 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
+	// 自定义拦截器
+	s.AddUnaryInterceptors(interceptors.ServerErrorInterceptor())
+
 	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)

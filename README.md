@@ -3,9 +3,10 @@ learn go
 
 ### 环境搭建
 ```shell
-docker run --name mini_tiktok_mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql:latest
+docker run --name tiktok_mysql -e MYSQL_ROOT_PASSWORD=tiktok_mysql -p 3306:3306 -d mysql
 
-docker run --name mini_tiktok-redis -p 6379:6379 -d redis:latest
+
+docker run --name tiktok-redis -p 6379:6379 -d redis:latest
 ````
 
 ###  代码生成

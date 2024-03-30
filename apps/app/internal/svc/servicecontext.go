@@ -1,9 +1,11 @@
 package svc
 
 import (
-	"github.com/zeromicro/go-zero/zrpc"
 	"mini_tiktok/apps/app/internal/config"
 	"mini_tiktok/apps/user/userrpc"
+	"mini_tiktok/pkg/interceptors"
+
+	"github.com/zeromicro/go-zero/zrpc"
 )
 
 type ServiceContext struct {
@@ -13,8 +15,11 @@ type ServiceContext struct {
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
+	// 自定义拦截器
+	userRPC := zrpc.MustNewClient(c.UserRpcConf, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
+
 	return &ServiceContext{
 		Config:  c,
-		UserRpc: userrpc.NewUserRPC(zrpc.MustNewClient(c.UserRpcConf)),
+		UserRpc: userrpc.NewUserRPC(userRPC),
 	}
 }

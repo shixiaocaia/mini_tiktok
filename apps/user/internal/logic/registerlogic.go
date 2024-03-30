@@ -2,10 +2,9 @@ package logic
 
 import (
 	"context"
-	"github.com/pkg/errors"
-	"mini_tiktok/pkg/xerr"
 	model2 "mini_tiktok/pkg/xmodel"
 
+	"mini_tiktok/apps/user/internal/code"
 	"mini_tiktok/apps/user/internal/svc"
 	"mini_tiktok/apps/user/user"
 
@@ -27,18 +26,21 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 }
 
 func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterResponse, error) {
+	// Check if the username is empty
+	if in.GetUsername() == "" {
+		return nil, code.RegisterNameEmpty
+	}
+
 	// Check if the username exists
 	userInfo, err := l.svcCtx.MysqlDB.UserModel.FindOneByUserName(l.ctx, in.GetUsername())
 	if err != nil && err != model2.ErrNotFound {
-		userDbFindUserNameError := xerr.UserDbFindUserNameError.SetErrMsg("UserModel")
-		l.Logger.Errorf("error %+v", userDbFindUserNameError)
-		return nil, errors.Wrapf(userDbFindUserNameError, "Database error, username: %s, err: %v", in.GetUsername(), err)
+		logx.Errorf("Register req: %v FindOneByUserName error: %v", in, err)
+		return nil, err
 	}
 
 	if userInfo != nil {
-		err = errors.New("Username already exists")
-		l.Logger.Errorf("error %+v", err)
-		return nil, err
+		logx.Errorf("Register req: %v error: %v", in, err)
+		return nil, code.UserNameExists
 	}
 
 	dbUser := &model2.User{
