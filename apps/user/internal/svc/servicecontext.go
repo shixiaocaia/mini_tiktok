@@ -1,30 +1,39 @@
 package svc
 
 import (
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"mini_tiktok/apps/user/internal/config"
-	svc "mini_tiktok/apps/user/internal/service"
-	model2 "mini_tiktok/pkg/xmodel"
+	"mini_tiktok/apps/user/internal/model"
+	"mini_tiktok/pkg/orm"
+
+	"github.com/zeromicro/go-zero/core/stores/redis"
 )
 
 type ServiceContext struct {
 	Config config.Config
 
-	MysqlDB *model2.MysqlDB
-	Service *svc.Service
+	MysqlDB   *orm.DB
+	UserModel *model.UserModel
+	BizRedis  *redis.Redis
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
-	sqlConn := sqlx.NewMysql(c.Mysql.DataSource)
-	return &ServiceContext{
-		Config:  c,
-		MysqlDB: NewMysqlDB(sqlConn),
-		Service: svc.NewService(c),
-	}
-}
+	db := orm.MustNewMysql(&orm.Config{
+		DSN:          c.DB.DataSource,
+		MaxOpenConns: c.DB.MaxOpenConns,
+		MaxIdleConns: c.DB.MaxIdleConns,
+		MaxLifetime:  c.DB.MaxLifetime,
+	})
 
-func NewMysqlDB(conn sqlx.SqlConn) *model2.MysqlDB {
-	return &model2.MysqlDB{
-		UserModel: model2.NewUserModel(conn),
+	rds := redis.MustNewRedis(redis.RedisConf{
+		Host: c.BizRedis.Host,
+		Pass: c.BizRedis.Pass,
+		Type: c.BizRedis.Type,
+	})
+
+	return &ServiceContext{
+		Config:    c,
+		MysqlDB:   db,
+		UserModel: model.NewUserModel(db.DB),
+		BizRedis:  rds,
 	}
 }

@@ -3,9 +3,9 @@ package logic
 import (
 	"context"
 	"mini_tiktok/apps/user/internal/code"
+	"mini_tiktok/apps/user/internal/model"
 	"mini_tiktok/apps/user/internal/svc"
 	"mini_tiktok/apps/user/user"
-	"mini_tiktok/pkg/xmodel"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,14 +25,13 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoReq) (*user.GetUserInfoResp, error) {
-	userInfo, err := l.svcCtx.MysqlDB.UserModel.FindOne(l.ctx, in.UserId)
-	if err != nil && err != xmodel.ErrNotFound {
-		l.logger.Errorf("error %v-%+v-%+v", xmodel.ErrNotFound, in.UserId, err)
+	userInfo, err := l.svcCtx.UserModel.FindOneByUserId(l.ctx, in.UserId)
+	if err != nil {
+		logx.Errorf("UserModel.FindOneByUserId error %+v-%+v", in.UserId, err)
 		return nil, err
 	}
 
 	if userInfo == nil {
-		l.logger.Info("user not found")
 		return nil, code.UserNotExist
 	}
 
@@ -40,15 +39,15 @@ func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoReq) (*user.GetUserIn
 
 }
 
-func ToUserInfo(userInfo *xmodel.User) *user.User {
+func ToUserInfo(userInfo *model.User) *user.User {
 	return &user.User{
 		Id:              userInfo.Id,
-		Name:            userInfo.UserName,
-		FollowCount:     userInfo.FollowCount,
-		FollowerCount:   userInfo.FollowerCount,
-		Avatar:          userInfo.Avatar.String,
-		BackgroundImage: userInfo.BackgroundImage.String,
-		Signature:       userInfo.Signature.String,
+		Name:            userInfo.Name,
+		FollowCount:     userInfo.Follow,
+		FollowerCount:   userInfo.Follower,
+		Avatar:          userInfo.Avatar,
+		BackgroundImage: userInfo.BackgroundImage,
+		Signature:       userInfo.Signature,
 		TotalFavorited:  userInfo.TotalFavorited,
 		FavoriteCount:   userInfo.FavoriteCount,
 		WorkCount:       userInfo.WorkCount,
