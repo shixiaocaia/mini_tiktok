@@ -2,30 +2,30 @@ package user
 
 import (
 	"context"
+
+	"mini_tiktok/apps/app/internal/svc"
+	"mini_tiktok/apps/app/internal/types"
 	"mini_tiktok/apps/user/user"
 
 	"github.com/jinzhu/copier"
-	"mini_tiktok/apps/app/internal/svc"
-	"mini_tiktok/apps/app/internal/types"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type DetailLogic struct {
+type GetUserInfoLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DetailLogic {
-	return &DetailLogic{
+func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserInfoLogic {
+	return &GetUserInfoLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *DetailLogic) Detail(req *types.UserInfoReq) (resp *types.UserInfoResp, err error) {
+func (l *GetUserInfoLogic) GetUserInfo(req *types.GetUserInfoReq) (resp *types.GetUserInfoResp, err error) {
 	userInfo, err := l.svcCtx.UserRpc.GetUserInfo(l.ctx, &user.GetUserInfoReq{
 		UserId: req.UserID,
 	})
@@ -35,7 +35,7 @@ func (l *DetailLogic) Detail(req *types.UserInfoReq) (resp *types.UserInfoResp, 
 
 	var user types.User
 	_ = copier.Copy(&user, userInfo.User)
-	resp = &types.UserInfoResp{
+	resp = &types.GetUserInfoResp{
 		User: user,
 	}
 	return

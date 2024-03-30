@@ -46,14 +46,15 @@ service app{
 @server(
 	prefix: /douyin/user
 	group: user
-	middleware: JwtAuth
+	jwt: JwtAuth
+	signature: true
 )
 
 service app{
 	@doc(
-		summary: "UserInfo"
-		description: "UserInfo request"
+		summary: "GetUserInfo"
+		description: "GetUserInfo request"
 	)
-	@handler detail
-	get / (UserInfoReq) returns (UserInfoResp)
+	@handler getUserInfo
+	get /getUserInfo (GetUserInfoReq) returns (GetUserInfoResp)
 }
