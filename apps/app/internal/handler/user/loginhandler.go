@@ -6,6 +6,7 @@ import (
 	"mini_tiktok/apps/app/internal/logic/user"
 	"mini_tiktok/apps/app/internal/svc"
 	"mini_tiktok/apps/app/internal/types"
+	"mini_tiktok/pkg/httpresult"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
@@ -20,10 +21,6 @@ func LoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := user.NewLoginLogic(r.Context(), svcCtx)
 		resp, err := l.Login(&req)
-		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
-		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
-		}
+		httpresult.HttpResult(r, w, resp, err)
 	}
 }

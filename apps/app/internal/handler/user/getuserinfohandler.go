@@ -6,6 +6,7 @@ import (
 	"mini_tiktok/apps/app/internal/logic/user"
 	"mini_tiktok/apps/app/internal/svc"
 	"mini_tiktok/apps/app/internal/types"
+	"mini_tiktok/pkg/httpresult"
 
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -24,10 +25,6 @@ func GetUserInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		logx.Debugf("req: %v", req)
 		l := user.NewGetUserInfoLogic(r.Context(), svcCtx)
 		resp, err := l.GetUserInfo(&req)
-		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
-		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
-		}
+		httpresult.HttpResult(r, w, resp, err)
 	}
 }

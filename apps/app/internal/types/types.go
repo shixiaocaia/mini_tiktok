@@ -29,10 +29,8 @@ type RegisterReq struct {
 }
 
 type RegisterResp struct {
-	StatusCode int    `json:"status_code"`
-	StatusMsg  string `json:"status_msg"`
-	UserID     int64  `json:"user_id"`
-	Token      string `json:"token"`
+	UserID int64  `json:"user_id"`
+	Token  string `json:"token"`
 }
 
 type LoginReq struct {
@@ -41,8 +39,6 @@ type LoginReq struct {
 }
 
 type LoginResp struct {
-	StatusCode  int    `json:"status_code"`
-	StatusMsg   string `json:"status_msg"`
 	AccessToken string `json:"access_token"`
 }
 

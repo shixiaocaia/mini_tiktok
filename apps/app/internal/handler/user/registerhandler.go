@@ -6,8 +6,7 @@ import (
 	"mini_tiktok/apps/app/internal/logic/user"
 	"mini_tiktok/apps/app/internal/svc"
 	"mini_tiktok/apps/app/internal/types"
-
-	"github.com/zeromicro/go-zero/rest/httpx"
+	"mini_tiktok/pkg/httpresult"
 )
 
 func RegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
@@ -22,10 +21,6 @@ func RegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := user.NewRegisterLogic(r.Context(), svcCtx)
 		resp, err := l.Register(&req)
-		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
-		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
-		}
+		httpresult.HttpResult(r, w, resp, err)
 	}
 }

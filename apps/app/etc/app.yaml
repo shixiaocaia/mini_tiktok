@@ -1,7 +1,7 @@
 Name: app
 Host: 0.0.0.0
 Port: 8889
-Timeout: 100000
+Timeout: 10000000
 Mode: dev
 
 Log:
@@ -23,4 +23,4 @@ UserRpcConf:
     Hosts:
       - 0.0.0.0:2379
     Key: user.rpc
-  Timeout: 100000
+  Timeout: 10000000

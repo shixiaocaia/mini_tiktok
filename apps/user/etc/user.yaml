@@ -1,7 +1,7 @@
 Name: user.rpc
 ListenOn: 0.0.0.0:8080
 Mode: dev
-Timeout: 10000
+Timeout: 10000000
 
 JwtAuth:
   AccessSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
