@@ -65,5 +65,5 @@ func NewErrCode(errCode uint32) *CodeError {
 }
 
 func NewErrMsg(errMsg string) *CodeError {
-	return &CodeError{errCode: COMMON_SERVER_ERROR, errMsg: errMsg}
+	return &CodeError{errCode: SERVER_COMMON_ERROR, errMsg: errMsg}
 }

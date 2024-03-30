@@ -9,6 +9,7 @@ import (
 	"mini_tiktok/apps/user/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type RegisterLogic struct {
@@ -32,7 +33,7 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 	}
 
 	// Check if the username exists
-	userInfo, err := l.svcCtx.MysqlDB.UserModel.FindOneByUserName(l.ctx, in.GetUsername())
+	userInfo, err := l.svcCtx.MysqlDB.UserModel.FindOneByUserName(l.ctx, in.Username)
 	if err != nil && err != model2.ErrNotFound {
 		logx.Errorf("Register req: %v FindOneByUserName error: %v", in, err)
 		return nil, err
@@ -43,28 +44,33 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		return nil, code.UserNameExists
 	}
 
+	if in.Username == "" || in.Password == "" {
+		err = errors.Wrapf(xerr.UserRegisterError, "User Register error, username: %s, password: %s, ", in.Username, in.Password)
+		l.Logger.Errorf("User Register error %+v", err)
+		return nil, err
+	}
+	hashPassword, _ := bcrypt.GenerateFromPassword([]byte(in.Password), bcrypt.DefaultCost)
 	dbUser := &model2.User{
-		UserName: in.GetUsername(),
-		Password: in.GetPassword(),
+		UserName: in.Username,
+		Password: string(hashPassword),
 	}
 
 	res, err := l.svcCtx.MysqlDB.UserModel.Insert(l.ctx, dbUser)
 	if err != nil {
-		l.Logger.Errorf("error %+v", err)
-		return nil, err
+		l.Logger.Errorf("UserModel Insert %+v-%+v", xerr.UserInsertError, err)
+		return nil, xerr.UserInsertError
 	}
-	l.Logger.Infof("res: %+v", res)
-	lastInsertId, err := res.LastInsertId()
-	if err != nil {
-		l.Logger.Errorf("error %+v", err)
-	}
+	lastInsertId, _ := res.LastInsertId()
 
-	// TODO: 生成token
+	generateToken, err := l.svcCtx.Service.GenerateToken(&user.GenerateTokenReq{
+		UserId: lastInsertId,
+	})
+	if err != nil {
+		return nil, xerr.UserGenerateTokenError
+	}
 
 	return &user.RegisterResponse{
-		StatusCode: 200,
-		StatusMsg:  "success",
-		UserId:     lastInsertId,
-		Token:      "2333",
+		UserId: lastInsertId,
+		Token:  generateToken.AccessToken,
 	}, nil
 }

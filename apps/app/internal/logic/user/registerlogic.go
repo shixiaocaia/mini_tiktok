@@ -26,7 +26,7 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 
 func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterResp, err error) {
 	registerRsp, err := l.svcCtx.UserRpc.Register(l.ctx, &pb.RegisterRequest{
-		Username: req.Username,
+		Username: req.UserName,
 		Password: req.Password,
 	})
 	if err != nil {
@@ -34,9 +34,7 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterRe
 		return nil, err
 	}
 	return &types.RegisterResp{
-		StatusCode: registerRsp.StatusCode,
-		StatusMsg:  registerRsp.StatusMsg,
-		UserID:     registerRsp.UserId,
-		Token:      registerRsp.Token,
+		UserID: registerRsp.UserId,
+		Token:  registerRsp.Token,
 	}, nil
 }

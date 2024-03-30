@@ -6,11 +6,12 @@ import (
 	"mini_tiktok/pkg/interceptors"
 
 	"github.com/zeromicro/go-zero/zrpc"
+
+	"github.com/zeromicro/go-zero/zrpc"
 )
 
 type ServiceContext struct {
-	Config config.Config
-
+	Config  config.Config
 	UserRpc userrpc.UserRPC
 }
 

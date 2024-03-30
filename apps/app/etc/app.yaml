@@ -9,10 +9,13 @@ Log:
   Level: info
   Encoding: plain
 
+JwtAuth:
+  AccessSecret: ae0536f9-6450-4606-8e13-5a19ed505da0
+
+
 UserRpcConf:
   Etcd:
     Hosts:
       - 0.0.0.0:2379
     Key: user.rpc
   Timeout: 100000
-

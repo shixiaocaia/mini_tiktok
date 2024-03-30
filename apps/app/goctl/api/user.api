@@ -1,5 +1,27 @@
 syntax = "v1"
 
+info(
+	title: "用户实例"
+	desc: "用户实例"
+	author: "shixiaocaia"
+	email: "shixiaocaia@gmail.com"
+	version: "v1"
+)
+
+type User struct{
+    Id int64 `json:"id"`
+    Name string `json:"name"`
+    FollowCount int64 `json:"follow_count"`
+    FollowerCount int64 `json:"follower_count"`
+    Avatar string `json:"avatar"`
+    BackgroundImage string `json:"background_image"`
+    Signature string `json:"signature"`
+    TotalFavorited int64 `json:"total_favorited"`
+    FavoriteCount int64 `json:"favorited_count"`
+    WorkCount int64 `json:"work_count"`
+}
+
+
 type HelloReq struct{
     Name string `json:"name"`
 }
@@ -10,35 +32,35 @@ type HelloResp struct{
 }
 
 type RegisterReq struct{
-    Username string `json:"username"`
+    UserName string `json:"username"`
     Password string `json:"password"`
 }
 
 type RegisterResp struct{
-    StatusCode int64 `json:"status_code"`
+    StatusCode int `json:"status_code"`
     StatusMsg string `json:"status_msg"`
     UserID int64 `json:"user_id"`
     Token string `json:"token"`
 }
 
-@server(
-    prefix: /douyin/user
-    group: user
-)
+type LoginReq struct{
+    UserName string `json:"username"`
+    Password string `json:"password"`
+}
 
-service app{
-    @doc(
-        summary: "Hello request"
-        description: "Hello request"
-    )
-    @handler hello
-    get /hello (HelloReq) returns (HelloResp)
+type LoginResp struct{
+    StatusCode int `json:"status_code"`
+    StatusMsg string `json:"status_msg"`
+    AccessToken  string `json:"access_token"`
+}
 
+type UserInfoReq struct{
+    UserID int64 `json:"user_id"`
+    Token string `json:"token"`
+}
 
-    @doc(
-        summary: "Login request"
-        description: "Login request"
-    )
-    @handler register
-    post /register (RegisterReq) returns (RegisterResp)
+type UserInfoResp struct{
+    StatusCode int `json:"status_code"`
+    StatusMsg string `json:"status_msg"`
+    User User `json:"user"`
 }

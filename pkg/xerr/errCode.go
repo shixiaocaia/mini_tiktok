@@ -3,8 +3,13 @@ package xerr
 const OK uint32 = 200
 
 // Global error code
-const COMMON_SERVER_ERROR uint32 = 100001
+const SERVER_COMMON_ERROR uint32 = 100001
 
-// User xservice
+// User service
 const USER_REGISTER_ERROR uint32 = 200000
 const USER_DB_FIND_USERNAME_ERROR uint32 = 200001
+const USER_USERNAME_EXISTS uint32 = 200002
+const USER_INSERT_ERROR uint32 = 200003
+const USER_NOT_EXISTED_ERROR uint32 = 200004
+const USER_PASSWORD_ERROR uint32 = 200005
+const USER_GENERATE_TOKEN_ERROR uint32 = 200006
