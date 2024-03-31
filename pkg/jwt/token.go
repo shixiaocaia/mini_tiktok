@@ -1,9 +1,11 @@
 package jwt
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
 type (
@@ -43,4 +45,11 @@ func genToken(iat int64, secretKey string, payloads map[string]interface{}, seco
 	token.Claims = claims
 
 	return token.SignedString([]byte(secretKey))
+}
+
+func JwtUnauthorizedResult(w http.ResponseWriter, r *http.Request, err error) {
+	httpx.WriteJson(w, http.StatusUnauthorized, map[string]interface{}{
+		"code": 401,
+		"msg":  "Unauthorized",
+	})
 }
