@@ -24,3 +24,9 @@ UserRpcConf:
       - 0.0.0.0:2379
     Key: user.rpc
   Timeout: 10000000
+
+Oss:
+  Endpoint: oss-cn-shanghai.aliyuncs.com
+  AccessKeyId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  AccessKeySecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  VideoBucket: minitiktokvideo

@@ -2,12 +2,20 @@ package video
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"path/filepath"
+	"time"
 
+	"mini_tiktok/apps/app/internal/code"
 	"mini_tiktok/apps/app/internal/svc"
 	"mini_tiktok/apps/app/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
+
+const maxFileSize = 10 << 20 // 10MB
 
 type PublishLogic struct {
 	logx.Logger
@@ -23,8 +31,36 @@ func NewPublishLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PublishLo
 	}
 }
 
-func (l *PublishLogic) Publish(req *types.PublishVideoReq) (resp *types.PublishVideoResp, err error) {
-	resp, err := l.svcCtx.
+func (l *PublishLogic) Publish(req *http.Request) (resp *types.PublishVideoResp, err error) {
+	_ = req.ParseMultipartForm(maxFileSize)
+	file, handler, err := req.FormFile("save_file")
+	if err != nil {
+		return nil, code.UploadVideoFailed
+	}
+	defer file.Close()
 
-	return	
+	bucket, err := l.svcCtx.OssClient.Bucket(l.svcCtx.Config.Oss.VideoBucket)
+	if err != nil {
+		logx.Errorf("get bucket failed, err:%v", err)
+		return nil, code.GetOssBucketErr
+	}
+
+	userId, err := l.ctx.Value(types.UserIdKey).(json.Number).Int64()
+	objectKey := genFilename(userId, handler.Filename)
+	err = bucket.PutObject(objectKey, file)
+	if err != nil {
+		logx.Errorf("put object failed, err: %v", err)
+		return nil, code.PutBucketErr
+	}
+	logx.Info("upload success")
+	return
+}
+
+func genFilename(userId int64, fileName string) string {
+	extension := filepath.Ext(fileName)
+	return fmt.Sprintf("%d_%d%s", time.Now().UnixMilli(), userId, extension)
+}
+
+func genFileURL(objectKey string) string {
+	return fmt.Sprintf("https://minitiktokvideo.oss-cn-shanghai.aliyuncs.com/%s", objectKey)
 }

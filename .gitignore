@@ -10,3 +10,5 @@
 default.etcd/
 
 .vscode/
+
+__debug_bin*

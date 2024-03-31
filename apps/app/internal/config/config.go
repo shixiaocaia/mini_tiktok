@@ -16,4 +16,13 @@ type Config struct {
 		RefreshExpire int64
 		RefreshAfter  int64
 	}
+
+	Oss struct {
+		Endpoint         string
+		AccessKeyId      string
+		AccessKeySecret  string
+		VideoBucket      string
+		ConnectTimeout   int64 `json:",optional"`
+		ReadWriteTimeout int64 `json:",optional"`
+	}
 }
