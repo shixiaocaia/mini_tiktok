@@ -69,13 +69,6 @@ service app{
 
 service app{
 	@doc(
-		summary: "Hello request"
-		description: "Hello request"
-	)
-	@handler hello
-	get /hello (HelloReq) returns (HelloResp)
-
-	@doc(
 		summary: "feed"
 		description: "viedeo feed request"
 	)
