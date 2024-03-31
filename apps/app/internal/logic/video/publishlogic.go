@@ -24,7 +24,7 @@ func NewPublishLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PublishLo
 }
 
 func (l *PublishLogic) Publish(req *types.PublishVideoReq) (resp *types.PublishVideoResp, err error) {
-	// todo: add your logic here and delete this line
+	resp, err := l.svcCtx.
 
-	return
+	return	
 }

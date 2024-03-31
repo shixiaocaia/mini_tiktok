@@ -19,169 +19,163 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	VideoPRC_GetFeed_FullMethodName             = "/video.VideoPRC/GetFeed"
-	VideoPRC_GetPublishVideoList_FullMethodName = "/video.VideoPRC/GetPublishVideoList"
-	VideoPRC_PublishVideo_FullMethodName        = "/video.VideoPRC/PublishVideo"
+	VideoRPC_GetFeed_FullMethodName             = "/video.VideoRPC/GetFeed"
+	VideoRPC_GetPublishVideoList_FullMethodName = "/video.VideoRPC/GetPublishVideoList"
+	VideoRPC_PublishVideo_FullMethodName        = "/video.VideoRPC/PublishVideo"
 )
 
-// VideoPRCClient is the client API for VideoPRC service.
+// VideoRPCClient is the client API for VideoRPC service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type VideoPRCClient interface {
-	// 视频流
+type VideoRPCClient interface {
 	GetFeed(ctx context.Context, in *GetFeedRequest, opts ...grpc.CallOption) (*GetFeedResponse, error)
-	// 获取用户发布的视频
 	GetPublishVideoList(ctx context.Context, in *GetPublishVideoListRequest, opts ...grpc.CallOption) (*GetPublishVideoListResponse, error)
-	// 发布视频
 	PublishVideo(ctx context.Context, in *PublishVideoRequest, opts ...grpc.CallOption) (*PublishVideoResponse, error)
 }
 
-type videoPRCClient struct {
+type videoRPCClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewVideoPRCClient(cc grpc.ClientConnInterface) VideoPRCClient {
-	return &videoPRCClient{cc}
+func NewVideoRPCClient(cc grpc.ClientConnInterface) VideoRPCClient {
+	return &videoRPCClient{cc}
 }
 
-func (c *videoPRCClient) GetFeed(ctx context.Context, in *GetFeedRequest, opts ...grpc.CallOption) (*GetFeedResponse, error) {
+func (c *videoRPCClient) GetFeed(ctx context.Context, in *GetFeedRequest, opts ...grpc.CallOption) (*GetFeedResponse, error) {
 	out := new(GetFeedResponse)
-	err := c.cc.Invoke(ctx, VideoPRC_GetFeed_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, VideoRPC_GetFeed_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *videoPRCClient) GetPublishVideoList(ctx context.Context, in *GetPublishVideoListRequest, opts ...grpc.CallOption) (*GetPublishVideoListResponse, error) {
+func (c *videoRPCClient) GetPublishVideoList(ctx context.Context, in *GetPublishVideoListRequest, opts ...grpc.CallOption) (*GetPublishVideoListResponse, error) {
 	out := new(GetPublishVideoListResponse)
-	err := c.cc.Invoke(ctx, VideoPRC_GetPublishVideoList_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, VideoRPC_GetPublishVideoList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *videoPRCClient) PublishVideo(ctx context.Context, in *PublishVideoRequest, opts ...grpc.CallOption) (*PublishVideoResponse, error) {
+func (c *videoRPCClient) PublishVideo(ctx context.Context, in *PublishVideoRequest, opts ...grpc.CallOption) (*PublishVideoResponse, error) {
 	out := new(PublishVideoResponse)
-	err := c.cc.Invoke(ctx, VideoPRC_PublishVideo_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, VideoRPC_PublishVideo_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// VideoPRCServer is the server API for VideoPRC service.
-// All implementations must embed UnimplementedVideoPRCServer
+// VideoRPCServer is the server API for VideoRPC service.
+// All implementations must embed UnimplementedVideoRPCServer
 // for forward compatibility
-type VideoPRCServer interface {
-	// 视频流
+type VideoRPCServer interface {
 	GetFeed(context.Context, *GetFeedRequest) (*GetFeedResponse, error)
-	// 获取用户发布的视频
 	GetPublishVideoList(context.Context, *GetPublishVideoListRequest) (*GetPublishVideoListResponse, error)
-	// 发布视频
 	PublishVideo(context.Context, *PublishVideoRequest) (*PublishVideoResponse, error)
-	mustEmbedUnimplementedVideoPRCServer()
+	mustEmbedUnimplementedVideoRPCServer()
 }
 
-// UnimplementedVideoPRCServer must be embedded to have forward compatible implementations.
-type UnimplementedVideoPRCServer struct {
+// UnimplementedVideoRPCServer must be embedded to have forward compatible implementations.
+type UnimplementedVideoRPCServer struct {
 }
 
-func (UnimplementedVideoPRCServer) GetFeed(context.Context, *GetFeedRequest) (*GetFeedResponse, error) {
+func (UnimplementedVideoRPCServer) GetFeed(context.Context, *GetFeedRequest) (*GetFeedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFeed not implemented")
 }
-func (UnimplementedVideoPRCServer) GetPublishVideoList(context.Context, *GetPublishVideoListRequest) (*GetPublishVideoListResponse, error) {
+func (UnimplementedVideoRPCServer) GetPublishVideoList(context.Context, *GetPublishVideoListRequest) (*GetPublishVideoListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPublishVideoList not implemented")
 }
-func (UnimplementedVideoPRCServer) PublishVideo(context.Context, *PublishVideoRequest) (*PublishVideoResponse, error) {
+func (UnimplementedVideoRPCServer) PublishVideo(context.Context, *PublishVideoRequest) (*PublishVideoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PublishVideo not implemented")
 }
-func (UnimplementedVideoPRCServer) mustEmbedUnimplementedVideoPRCServer() {}
+func (UnimplementedVideoRPCServer) mustEmbedUnimplementedVideoRPCServer() {}
 
-// UnsafeVideoPRCServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to VideoPRCServer will
+// UnsafeVideoRPCServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to VideoRPCServer will
 // result in compilation errors.
-type UnsafeVideoPRCServer interface {
-	mustEmbedUnimplementedVideoPRCServer()
+type UnsafeVideoRPCServer interface {
+	mustEmbedUnimplementedVideoRPCServer()
 }
 
-func RegisterVideoPRCServer(s grpc.ServiceRegistrar, srv VideoPRCServer) {
-	s.RegisterService(&VideoPRC_ServiceDesc, srv)
+func RegisterVideoRPCServer(s grpc.ServiceRegistrar, srv VideoRPCServer) {
+	s.RegisterService(&VideoRPC_ServiceDesc, srv)
 }
 
-func _VideoPRC_GetFeed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _VideoRPC_GetFeed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetFeedRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VideoPRCServer).GetFeed(ctx, in)
+		return srv.(VideoRPCServer).GetFeed(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: VideoPRC_GetFeed_FullMethodName,
+		FullMethod: VideoRPC_GetFeed_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VideoPRCServer).GetFeed(ctx, req.(*GetFeedRequest))
+		return srv.(VideoRPCServer).GetFeed(ctx, req.(*GetFeedRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VideoPRC_GetPublishVideoList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _VideoRPC_GetPublishVideoList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetPublishVideoListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VideoPRCServer).GetPublishVideoList(ctx, in)
+		return srv.(VideoRPCServer).GetPublishVideoList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: VideoPRC_GetPublishVideoList_FullMethodName,
+		FullMethod: VideoRPC_GetPublishVideoList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VideoPRCServer).GetPublishVideoList(ctx, req.(*GetPublishVideoListRequest))
+		return srv.(VideoRPCServer).GetPublishVideoList(ctx, req.(*GetPublishVideoListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VideoPRC_PublishVideo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _VideoRPC_PublishVideo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PublishVideoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VideoPRCServer).PublishVideo(ctx, in)
+		return srv.(VideoRPCServer).PublishVideo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: VideoPRC_PublishVideo_FullMethodName,
+		FullMethod: VideoRPC_PublishVideo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VideoPRCServer).PublishVideo(ctx, req.(*PublishVideoRequest))
+		return srv.(VideoRPCServer).PublishVideo(ctx, req.(*PublishVideoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// VideoPRC_ServiceDesc is the grpc.ServiceDesc for VideoPRC service.
+// VideoRPC_ServiceDesc is the grpc.ServiceDesc for VideoRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var VideoPRC_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "video.VideoPRC",
-	HandlerType: (*VideoPRCServer)(nil),
+var VideoRPC_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "video.VideoRPC",
+	HandlerType: (*VideoRPCServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetFeed",
-			Handler:    _VideoPRC_GetFeed_Handler,
+			Handler:    _VideoRPC_GetFeed_Handler,
 		},
 		{
 			MethodName: "GetPublishVideoList",
-			Handler:    _VideoPRC_GetPublishVideoList_Handler,
+			Handler:    _VideoRPC_GetPublishVideoList_Handler,
 		},
 		{
 			MethodName: "PublishVideo",
-			Handler:    _VideoPRC_PublishVideo_Handler,
+			Handler:    _VideoRPC_PublishVideo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

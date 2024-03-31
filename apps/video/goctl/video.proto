@@ -5,12 +5,9 @@ option go_package = "./video";
 
 // goctl rpc protoc video.proto --go_out=../ --go-grpc_out=../  --zrpc_out=../
 
-service VideoPRC {
-  // 视频流
+service VideoRPC {
   rpc GetFeed(GetFeedRequest) returns (GetFeedResponse);
-  // 获取用户发布的视频
   rpc GetPublishVideoList(GetPublishVideoListRequest) returns (GetPublishVideoListResponse);
-  // 发布视频
   rpc PublishVideo(PublishVideoRequest) returns (PublishVideoResponse);
 }
 

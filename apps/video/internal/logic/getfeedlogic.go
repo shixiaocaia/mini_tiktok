@@ -23,7 +23,6 @@ func NewGetFeedLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetFeedLo
 	}
 }
 
-// 视频流
 func (l *GetFeedLogic) GetFeed(in *video.GetFeedRequest) (*video.GetFeedResponse, error) {
 	// todo: add your logic here and delete this line
 

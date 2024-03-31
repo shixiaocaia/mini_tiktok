@@ -33,5 +33,5 @@ goctl api go -api ./goctl/app.api  --home ../../template -dir .  -style gozero
 
 goctl rpc protoc user.proto  --go_out=../ --go-grpc_out=../  --zrpc_out=../
 
-goctl rpc protoc user.proto  --home ../../../template/1.5.6 --go_out=../ --go-grpc_out=../  --zrpc_out=../
+goctl rpc protoc video.proto  --home ../../../template --go_out=../ --go-grpc_out=../  --zrpc_out=../
 ```

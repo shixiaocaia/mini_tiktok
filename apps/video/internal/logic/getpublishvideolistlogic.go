@@ -23,7 +23,6 @@ func NewGetPublishVideoListLogic(ctx context.Context, svcCtx *svc.ServiceContext
 	}
 }
 
-// 获取用户发布的视频
 func (l *GetPublishVideoListLogic) GetPublishVideoList(in *video.GetPublishVideoListRequest) (*video.GetPublishVideoListResponse, error) {
 	// todo: add your logic here and delete this line
 

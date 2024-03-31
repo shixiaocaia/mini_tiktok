@@ -26,7 +26,7 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		video.RegisterVideoServiceServer(grpcServer, server.NewVideoServiceServer(ctx))
+		video.RegisterVideoPRCServer(grpcServer, server.NewVideoPRCServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)

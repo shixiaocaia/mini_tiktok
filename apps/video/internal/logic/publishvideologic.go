@@ -23,7 +23,6 @@ func NewPublishVideoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Publ
 	}
 }
 
-// 发布视频
 func (l *PublishVideoLogic) PublishVideo(in *video.PublishVideoRequest) (*video.PublishVideoResponse, error) {
 	// todo: add your logic here and delete this line
 

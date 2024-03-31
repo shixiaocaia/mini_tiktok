@@ -22,19 +22,16 @@ func NewVideoPRCServer(svcCtx *svc.ServiceContext) *VideoPRCServer {
 	}
 }
 
-// 视频流
 func (s *VideoPRCServer) GetFeed(ctx context.Context, in *video.GetFeedRequest) (*video.GetFeedResponse, error) {
 	l := logic.NewGetFeedLogic(ctx, s.svcCtx)
 	return l.GetFeed(in)
 }
 
-// 获取用户发布的视频
 func (s *VideoPRCServer) GetPublishVideoList(ctx context.Context, in *video.GetPublishVideoListRequest) (*video.GetPublishVideoListResponse, error) {
 	l := logic.NewGetPublishVideoListLogic(ctx, s.svcCtx)
 	return l.GetPublishVideoList(in)
 }
 
-// 发布视频
 func (s *VideoPRCServer) PublishVideo(ctx context.Context, in *video.PublishVideoRequest) (*video.PublishVideoResponse, error) {
 	l := logic.NewPublishVideoLogic(ctx, s.svcCtx)
 	return l.PublishVideo(in)
