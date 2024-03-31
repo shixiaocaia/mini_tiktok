@@ -10,6 +10,7 @@ info(
 
 import (
 	"api/user.api"
+	"api/video.api"
 )
 
 //============================> userService <============================
@@ -57,4 +58,52 @@ service app{
 	)
 	@handler getUserInfo
 	get /getUserInfo (GetUserInfoReq) returns (GetUserInfoResp)
+}
+
+//============================> videoService <============================
+// no need login
+@server(
+	prefix: /douyin/video
+	group: video
+)
+
+service app{
+	@doc(
+		summary: "Hello request"
+		description: "Hello request"
+	)
+	@handler hello
+	get /hello (HelloReq) returns (HelloResp)
+
+	@doc(
+		summary: "feed"
+		description: "viedeo feed request"
+	)
+	@handler feed
+	get /feed (GetFeedReq) returns (GetFeedResp)
+
+}
+
+// need login
+@server(
+	prefix: /douyin/video
+	group: video
+	jwt: JwtAuth
+	signature: true
+)
+
+service app{
+	@doc(
+		summary: "PublishVideo List"
+		description: "Video List"
+	)
+	@handler publishList
+	get /publishList (GetPublishListReq) returns (GetPublishListResp)
+
+	@doc(
+		summary: "PublishVideo request"
+		description: "PublishVideo request"
+	)
+	@handler publish
+	post /publish (PublishVideoReq) returns (PublishVideoResp)
 }

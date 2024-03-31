@@ -49,3 +49,38 @@ type GetUserInfoReq struct {
 type GetUserInfoResp struct {
 	User User `json:"user"`
 }
+
+type VideoInfo struct {
+	Id            int64  `json:"id"`
+	AuthorId      int64  `json:"author_id"`
+	PlayUrl       string `json:"play_url"`
+	CoverUrl      string `json:"cover_url"`
+	FavoriteCount int64  `json:"favorite_count"`
+	CommentCount  int64  `json:"comment_count"`
+	IsFavorite    bool   `json:"is_favorite"`
+	Title         string `json:"title"`
+}
+
+type GetFeedReq struct {
+	LastTime int64 `json:"latest_time"`
+}
+
+type GetFeedResp struct {
+	NextTime  int64       `json:"next_time"`
+	VideoList []VideoInfo `json:"video_list"`
+}
+
+type GetPublishListReq struct {
+}
+
+type GetPublishListResp struct {
+	VideoList []VideoInfo `json:"video_list"`
+}
+
+type PublishVideoReq struct {
+	SaveFile string `json:"save_file"`
+	Title    string `json:"title"`
+}
+
+type PublishVideoResp struct {
+}
