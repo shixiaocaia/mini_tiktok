@@ -25,6 +25,14 @@ UserRpcConf:
     Key: user.rpc
   Timeout: 10000000
 
+VideoRpcConf:
+  Etcd:
+    Hosts:
+      - 0.0.0.0:2379
+    Key: video.rpc
+  Timeout: 10000000
+
+
 Oss:
   Endpoint: oss-cn-shanghai.aliyuncs.com
   AccessKeyId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx

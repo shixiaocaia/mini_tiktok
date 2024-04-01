@@ -11,6 +11,7 @@ import (
 	"mini_tiktok/apps/app/internal/code"
 	"mini_tiktok/apps/app/internal/svc"
 	"mini_tiktok/apps/app/internal/types"
+	"mini_tiktok/apps/video/video"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -53,6 +54,19 @@ func (l *PublishLogic) Publish(req *http.Request) (resp *types.PublishVideoResp,
 		return nil, code.PutBucketErr
 	}
 	logx.Info("upload success")
+
+	// 插入记录
+	_, err = l.svcCtx.VideoRPC.PublishVideo(l.ctx, &video.PublishVideoRequest{
+		AuthorId: userId,
+		PlayUrl:  genFileURL(objectKey),
+		CoverUrl: "not support now",
+		Title:    req.PostForm.Get("title"),
+	})
+	if err != nil {
+		logx.Errorf("Insert video table failed, err: %v", err)
+		return nil, err
+	}
+
 	return
 }
 

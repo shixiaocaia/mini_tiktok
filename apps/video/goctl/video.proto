@@ -23,8 +23,10 @@ message VideoInfo {
 }
 
 message PublishVideoRequest {
-  string saveFile = 1;
-  string title = 2;
+  int64 author_id = 1; // 视频作者信息
+  string play_url = 2; // 视频播放地址
+  string cover_url = 3; // 视频封面地址​
+  string title = 4; //视频标题
 }
 
 message PublishVideoResponse {

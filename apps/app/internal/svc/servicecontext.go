@@ -37,7 +37,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	// 自定义拦截器
 	userRPC := zrpc.MustNewClient(c.UserRpcConf, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
-	videoRPC := zrpc.MustNewClient(c.UserRpcConf, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
+	videoRPC := zrpc.MustNewClient(c.VideoRpcConf, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
 
 	return &ServiceContext{
 		Config:    c,

@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 
+	"mini_tiktok/apps/video/internal/model"
 	"mini_tiktok/apps/video/internal/svc"
 	"mini_tiktok/apps/video/video"
 
@@ -24,7 +25,15 @@ func NewPublishVideoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Publ
 }
 
 func (l *PublishVideoLogic) PublishVideo(in *video.PublishVideoRequest) (*video.PublishVideoResponse, error) {
-	// todo: add your logic here and delete this line
-
+	_, err := l.svcCtx.VideoModel.Insert(l.ctx, &model.Video{
+		AuthorId: in.AuthorId,
+		PlayUrl:  in.PlayUrl,
+		CoverUrl: in.CoverUrl,
+		Title:    in.Title,
+	})
+	if err != nil {
+		logx.Errorf("VideoModel.Insert failed, err: %v", err)
+		return nil, err
+	}
 	return &video.PublishVideoResponse{}, nil
 }
