@@ -12,3 +12,5 @@ default.etcd/
 .vscode/
 
 __debug_bin*
+
+*_dev.yaml
