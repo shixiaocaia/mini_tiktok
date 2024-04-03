@@ -13,17 +13,17 @@ import (
 )
 
 type (
-	GetFeedRequest              = video.GetFeedRequest
-	GetFeedResponse             = video.GetFeedResponse
-	GetPublishVideoListRequest  = video.GetPublishVideoListRequest
-	GetPublishVideoListResponse = video.GetPublishVideoListResponse
-	PublishVideoRequest         = video.PublishVideoRequest
-	PublishVideoResponse        = video.PublishVideoResponse
-	VideoInfo                   = video.VideoInfo
+	FeedRequest          = video.FeedRequest
+	FeedResponse         = video.FeedResponse
+	PublishVideoRequest  = video.PublishVideoRequest
+	PublishVideoResponse = video.PublishVideoResponse
+	VideoItem            = video.VideoItem
+	VideoListRequest     = video.VideoListRequest
+	VideoListResponse    = video.VideoListResponse
 
 	VideoRPC interface {
-		GetFeed(ctx context.Context, in *GetFeedRequest, opts ...grpc.CallOption) (*GetFeedResponse, error)
-		GetPublishVideoList(ctx context.Context, in *GetPublishVideoListRequest, opts ...grpc.CallOption) (*GetPublishVideoListResponse, error)
+		Feed(ctx context.Context, in *FeedRequest, opts ...grpc.CallOption) (*FeedResponse, error)
+		VideoList(ctx context.Context, in *VideoListRequest, opts ...grpc.CallOption) (*VideoListResponse, error)
 		PublishVideo(ctx context.Context, in *PublishVideoRequest, opts ...grpc.CallOption) (*PublishVideoResponse, error)
 	}
 
@@ -38,14 +38,14 @@ func NewVideoRPC(cli zrpc.Client) VideoRPC {
 	}
 }
 
-func (m *defaultVideoRPC) GetFeed(ctx context.Context, in *GetFeedRequest, opts ...grpc.CallOption) (*GetFeedResponse, error) {
+func (m *defaultVideoRPC) Feed(ctx context.Context, in *FeedRequest, opts ...grpc.CallOption) (*FeedResponse, error) {
 	client := video.NewVideoRPCClient(m.cli.Conn())
-	return client.GetFeed(ctx, in, opts...)
+	return client.Feed(ctx, in, opts...)
 }
 
-func (m *defaultVideoRPC) GetPublishVideoList(ctx context.Context, in *GetPublishVideoListRequest, opts ...grpc.CallOption) (*GetPublishVideoListResponse, error) {
+func (m *defaultVideoRPC) VideoList(ctx context.Context, in *VideoListRequest, opts ...grpc.CallOption) (*VideoListResponse, error) {
 	client := video.NewVideoRPCClient(m.cli.Conn())
-	return client.GetPublishVideoList(ctx, in, opts...)
+	return client.VideoList(ctx, in, opts...)
 }
 
 func (m *defaultVideoRPC) PublishVideo(ctx context.Context, in *PublishVideoRequest, opts ...grpc.CallOption) (*PublishVideoResponse, error) {

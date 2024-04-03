@@ -1,6 +1,6 @@
 module mini_tiktok
 
-go 1.20
+go 1.22
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
@@ -11,6 +11,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/zeromicro/go-zero v1.6.0
 	golang.org/x/crypto v0.21.0
+	golang.org/x/sync v0.6.0
 	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.31.0
 	gorm.io/driver/mysql v1.5.6
@@ -39,7 +40,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
-	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.0 // indirect

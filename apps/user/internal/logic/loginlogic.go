@@ -7,7 +7,6 @@ import (
 	"mini_tiktok/apps/user/internal/svc"
 	"mini_tiktok/apps/user/user"
 	"mini_tiktok/pkg/jwt"
-	model2 "mini_tiktok/pkg/xmodel"
 
 	"github.com/zeromicro/go-zero/core/logx"
 	"golang.org/x/crypto/bcrypt"
@@ -29,7 +28,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 
 func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 	userInfo, err := l.svcCtx.UserModel.FindOneByUserName(l.ctx, in.GetUsername())
-	if err != nil && err != model2.ErrNotFound {
+	if err != nil {
 		logx.Errorf("FindOneByUserName userName: %v error %+v", in.GetUsername(), err)
 		return nil, err
 	}

@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetFeedLogic struct {
+type FeedLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewGetFeedLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetFeedLogic {
-	return &GetFeedLogic{
+func NewFeedLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FeedLogic {
+	return &FeedLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *GetFeedLogic) GetFeed(in *video.GetFeedRequest) (*video.GetFeedResponse, error) {
+func (l *FeedLogic) Feed(in *video.FeedRequest) (*video.FeedResponse, error) {
 	// todo: add your logic here and delete this line
 
-	return &video.GetFeedResponse{}, nil
+	return &video.FeedResponse{}, nil
 }

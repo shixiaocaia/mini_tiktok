@@ -50,10 +50,10 @@ type LoginResp struct{
     AccessToken  string `json:"access_token"`
 }
 
-type GetUserInfoReq struct{
+type UserInfoReq struct{
     UserID int64 `form:"user_id"`
 }
 
-type GetUserInfoResp struct{
+type UserInfoResp struct{
     User User `json:"user"`
 }

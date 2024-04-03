@@ -33,3 +33,16 @@ func (m *VideoModel) Insert(ctx context.Context, data *Video) (int64, error) {
 	result := m.db.WithContext(ctx).Create((&data))
 	return data.Id, result.Error
 }
+
+func (m *VideoModel) FindByIds(ctx context.Context, ids []int64) ([]*Video, error) {
+	var videos []*Video
+	err := m.db.WithContext(ctx).Where("id IN ?", ids).Find(&videos).Error
+	return videos, err
+}
+
+func (m *VideoModel) FindByUserId(ctx context.Context, userId int64, pageSize int64, sortField string) ([]*Video, error) {
+	var videos []*Video
+	sortField = sortField + " DESC"
+	err := m.db.WithContext(ctx).Where("author_id = ?", userId).Order(sortField).Limit(int(pageSize)).Find(&videos).Error
+	return videos, err
+}

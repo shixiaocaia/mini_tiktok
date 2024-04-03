@@ -8,23 +8,19 @@ import (
 	"mini_tiktok/apps/app/internal/types"
 	"mini_tiktok/pkg/httpresult"
 
-	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func GetUserInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func UserInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.GetUserInfoReq
+		var req types.UserInfoReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
-		// userId := r.URL.Query().Get("user_id")
 
-		// req.UserID, _ = strconv.ParseInt(userId, 10, 64)
-		logx.Debugf("req: %v", req)
-		l := user.NewGetUserInfoLogic(r.Context(), svcCtx)
-		resp, err := l.GetUserInfo(&req)
+		l := user.NewUserInfoLogic(r.Context(), svcCtx)
+		resp, err := l.UserInfo(&req)
 		httpresult.HttpResult(r, w, resp, err)
 	}
 }

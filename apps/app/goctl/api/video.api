@@ -21,21 +21,29 @@ type VideoInfo struct {
 }
 
 type (
-	GetFeedReq{
+	FeedReq{
     	LastTime int64 `json:"latest_time"`
 	}
 
-	GetFeedResp{
+	FeedResp{
 		NextTime int64 `json:"next_time"`
 		VideoList []VideoInfo `json:"video_list"`
 	}
 )
 
 type (
-	GetPublishListReq{
+	VideoListReq{
+		UserId int64 `json:"user_id"`
+		Cursor int64 `json:"cursor"`
+		PageSize int64 `json:"page_size"`
+		SortType int32 `json:"sort_type"`
+		VideoId int64 `json:"video_id"`
 	}
-	GetPublishListResp{
+	VideoListResp{
 		VideoList []VideoInfo `json:"video_list"`
+		Cursor int64 `json:"cursor"`
+		IsEnd bool `json:"is_end"`
+		VideoId int64 `json:"video_id"`
 	}
 )
 

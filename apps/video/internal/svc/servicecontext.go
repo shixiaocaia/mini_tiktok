@@ -6,14 +6,16 @@ import (
 	"mini_tiktok/pkg/orm"
 
 	"github.com/zeromicro/go-zero/core/stores/redis"
+	"golang.org/x/sync/singleflight"
 )
 
 type ServiceContext struct {
 	Config config.Config
 
-	MysqlDB    *orm.DB
-	VideoModel *model.VideoModel
-	BizRedis   *redis.Redis
+	MysqlDB           *orm.DB
+	VideoModel        *model.VideoModel
+	BizRedis          *redis.Redis
+	SingleFlightGroup singleflight.Group
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {

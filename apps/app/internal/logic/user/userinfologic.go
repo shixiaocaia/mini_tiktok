@@ -11,21 +11,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetUserInfoLogic struct {
+type UserInfoLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserInfoLogic {
-	return &GetUserInfoLogic{
+func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfoLogic {
+	return &UserInfoLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *GetUserInfoLogic) GetUserInfo(req *types.GetUserInfoReq) (resp *types.GetUserInfoResp, err error) {
+func (l *UserInfoLogic) UserInfo(req *types.UserInfoReq) (resp *types.UserInfoResp, err error) {
 	userInfo, err := l.svcCtx.UserRpc.GetUserInfo(l.ctx, &user.GetUserInfoReq{
 		UserId: req.UserID,
 	})
@@ -35,7 +35,7 @@ func (l *GetUserInfoLogic) GetUserInfo(req *types.GetUserInfoReq) (resp *types.G
 
 	var user types.User
 	_ = copier.Copy(&user, userInfo.User)
-	resp = &types.GetUserInfoResp{
+	resp = &types.UserInfoResp{
 		User: user,
 	}
 	return

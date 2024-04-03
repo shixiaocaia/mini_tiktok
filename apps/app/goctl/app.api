@@ -56,8 +56,8 @@ service app{
 		summary: "GetUserInfo"
 		description: "GetUserInfo request"
 	)
-	@handler getUserInfo
-	get /getUserInfo (GetUserInfoReq) returns (GetUserInfoResp)
+	@handler userInfo
+	get /userInfo (UserInfoReq) returns (UserInfoResp)
 }
 
 //============================> videoService <============================
@@ -73,7 +73,7 @@ service app{
 		description: "viedeo feed request"
 	)
 	@handler feed
-	get /feed (GetFeedReq) returns (GetFeedResp)
+	get /feed (FeedReq) returns (FeedResp)
 
 }
 
@@ -88,10 +88,10 @@ service app{
 service app{
 	@doc(
 		summary: "PublishVideo List"
-		description: "Video List"
+		description: "PublishVideo List"
 	)
-	@handler publishList
-	get /publishList (GetPublishListReq) returns (GetPublishListResp)
+	@handler videoList
+	get /list (VideoListReq) returns (VideoListResp)
 
 	@doc(
 		summary: "PublishVideo request"

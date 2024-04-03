@@ -37,8 +37,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodGet,
-				Path:    "/getUserInfo",
-				Handler: user.GetUserInfoHandler(serverCtx),
+				Path:    "/userInfo",
+				Handler: user.UserInfoHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
@@ -61,8 +61,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodGet,
-				Path:    "/publishList",
-				Handler: video.PublishListHandler(serverCtx),
+				Path:    "/list",
+				Handler: video.VideoListHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,

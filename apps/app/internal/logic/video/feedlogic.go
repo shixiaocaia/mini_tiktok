@@ -23,7 +23,7 @@ func NewFeedLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FeedLogic {
 	}
 }
 
-func (l *FeedLogic) Feed(req *types.GetFeedReq) (resp *types.GetFeedResp, err error) {
+func (l *FeedLogic) Feed(req *types.FeedReq) (resp *types.FeedResp, err error) {
 	// todo: add your logic here and delete this line
 
 	return

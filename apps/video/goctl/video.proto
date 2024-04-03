@@ -6,12 +6,12 @@ option go_package = "./video";
 // goctl rpc protoc video.proto --go_out=../ --go-grpc_out=../  --zrpc_out=../
 
 service VideoRPC {
-  rpc GetFeed(GetFeedRequest) returns (GetFeedResponse);
-  rpc GetPublishVideoList(GetPublishVideoListRequest) returns (GetPublishVideoListResponse);
+  rpc Feed(FeedRequest) returns (FeedResponse);
+  rpc VideoList(VideoListRequest) returns (VideoListResponse);
   rpc PublishVideo(PublishVideoRequest) returns (PublishVideoResponse);
 }
 
-message VideoInfo {
+message VideoItem {
   int64 id = 1; // 视频唯一标识
   int64 author_id = 2; // 视频作者信息
   string play_url = 3; // 视频播放地址
@@ -19,7 +19,8 @@ message VideoInfo {
   int64 favorite_count = 5; // 视频的点赞总数​
   int64 comment_count = 6; // 视频的评论总数​
   bool is_favorite = 7; // true-已点赞，false-未点赞​
-  string title = 8; //视频标题
+  string title = 8; // 视频标题
+  int64 publish_time = 9; // 视频发布时间
 }
 
 message PublishVideoRequest {
@@ -33,19 +34,27 @@ message PublishVideoResponse {
 }
 
 
-message GetPublishVideoListRequest {
+message VideoListRequest {
+  int64 userId = 1; // 用户Id
+  int64 cursor = 2; // 游标
+  int64 page_size = 3; // 分页大小
+  int32 sort_type = 4; // 排序方式
+  int64 video_id = 5; // 视频Id
 }
 
-message GetPublishVideoListResponse {
-  repeated  VideoInfo video_list = 1;
+message VideoListResponse {
+  repeated  VideoItem video_list = 1;
+  bool is_end = 2;
+  int64 cursor = 3;
+  int64 videoId = 4;
 }
 
 
-message GetFeedRequest {
+message FeedRequest {
   int64 latest_time = 1;
 }
 
-message GetFeedResponse {
-  repeated VideoInfo video_list = 1;
+message FeedResponse {
+  repeated VideoItem video_list = 1;
   int64 next_time = 2;
 }

@@ -11,16 +11,16 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func PublishListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func VideoListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.GetPublishListReq
+		var req types.VideoListReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := video.NewPublishListLogic(r.Context(), svcCtx)
-		resp, err := l.PublishList(&req)
+		l := video.NewVideoListLogic(r.Context(), svcCtx)
+		resp, err := l.VideoList(&req)
 		httpresult.HttpResult(r, w, resp, err)
 	}
 }

@@ -42,11 +42,11 @@ type LoginResp struct {
 	AccessToken string `json:"access_token"`
 }
 
-type GetUserInfoReq struct {
+type UserInfoReq struct {
 	UserID int64 `form:"user_id"`
 }
 
-type GetUserInfoResp struct {
+type UserInfoResp struct {
 	User User `json:"user"`
 }
 
@@ -61,20 +61,28 @@ type VideoInfo struct {
 	Title         string `json:"title"`
 }
 
-type GetFeedReq struct {
+type FeedReq struct {
 	LastTime int64 `json:"latest_time"`
 }
 
-type GetFeedResp struct {
+type FeedResp struct {
 	NextTime  int64       `json:"next_time"`
 	VideoList []VideoInfo `json:"video_list"`
 }
 
-type GetPublishListReq struct {
+type VideoListReq struct {
+	UserId   int64 `json:"user_id"`
+	Cursor   int64 `json:"cursor"`
+	PageSize int64 `json:"page_size"`
+	SortType int32 `json:"sort_type"`
+	VideoId  int64 `json:"video_id"`
 }
 
-type GetPublishListResp struct {
+type VideoListResp struct {
 	VideoList []VideoInfo `json:"video_list"`
+	Cursor    int64       `json:"cursor"`
+	IsEnd     bool        `json:"is_end"`
+	VideoId   int64       `json:"video_id"`
 }
 
 type PublishVideoReq struct {

@@ -22,14 +22,14 @@ func NewVideoRPCServer(svcCtx *svc.ServiceContext) *VideoRPCServer {
 	}
 }
 
-func (s *VideoRPCServer) GetFeed(ctx context.Context, in *video.GetFeedRequest) (*video.GetFeedResponse, error) {
-	l := logic.NewGetFeedLogic(ctx, s.svcCtx)
-	return l.GetFeed(in)
+func (s *VideoRPCServer) Feed(ctx context.Context, in *video.FeedRequest) (*video.FeedResponse, error) {
+	l := logic.NewFeedLogic(ctx, s.svcCtx)
+	return l.Feed(in)
 }
 
-func (s *VideoRPCServer) GetPublishVideoList(ctx context.Context, in *video.GetPublishVideoListRequest) (*video.GetPublishVideoListResponse, error) {
-	l := logic.NewGetPublishVideoListLogic(ctx, s.svcCtx)
-	return l.GetPublishVideoList(in)
+func (s *VideoRPCServer) VideoList(ctx context.Context, in *video.VideoListRequest) (*video.VideoListResponse, error) {
+	l := logic.NewVideoListLogic(ctx, s.svcCtx)
+	return l.VideoList(in)
 }
 
 func (s *VideoRPCServer) PublishVideo(ctx context.Context, in *video.PublishVideoRequest) (*video.PublishVideoResponse, error) {
