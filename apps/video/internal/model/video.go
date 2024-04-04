@@ -8,13 +8,13 @@ import (
 
 type Video struct {
 	Id            int64  `gorm:"column:id; primary_key;"` // video_id
+	Title         string `gorm:"column:title;"`           // 标题
 	AuthorId      int64  `gorm:"column:author_id;"`       // 谁发布的
+	PublishTime   int64  `gorm:"autoCreateTime"`          // 发布时间
 	PlayUrl       string `gorm:"column:play_url;"`        // videoURL
 	CoverUrl      string `gorm:"column:cover_url;"`       // picURL
 	FavoriteCount int64  `gorm:"column:favorite_count;"`  // 点赞数
 	CommentCount  int64  `gorm:"column:comment_count;"`   // 评论数
-	PublishTime   int64  `gorm:"autoCreateTime"`          // 发布时间
-	Title         string `gorm:"column:title;"`           // 标题
 }
 
 func (r *Video) TableName() string {
@@ -40,9 +40,22 @@ func (m *VideoModel) FindByIds(ctx context.Context, ids []int64) ([]*Video, erro
 	return videos, err
 }
 
-func (m *VideoModel) FindByUserId(ctx context.Context, userId int64, pageSize int64, sortField string) ([]*Video, error) {
+func (m *VideoModel) FindByUserId(ctx context.Context, userId int64, limit int, sortField string, cursor int64) ([]*Video, error) {
 	var videos []*Video
-	sortField = sortField + " DESC"
-	err := m.db.WithContext(ctx).Where("author_id = ?", userId).Order(sortField).Limit(int(pageSize)).Find(&videos).Error
-	return videos, err
+	var cursorField string
+
+	if sortField == "publish_time" {
+		cursorField = "publish_time < ?"
+	} else {
+		cursorField = "favorite_count < ?"
+	}
+
+	query := m.db.WithContext(ctx).Where("author_id = ? AND "+cursorField, userId, cursor).Order(sortField + " DESC").Limit(limit)
+
+	err := query.Find(&videos).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return videos, nil
 }

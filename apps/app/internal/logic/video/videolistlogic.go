@@ -2,6 +2,7 @@ package video
 
 import (
 	"context"
+	"encoding/json"
 
 	"mini_tiktok/apps/app/internal/svc"
 	"mini_tiktok/apps/app/internal/types"
@@ -25,10 +26,15 @@ func NewVideoListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *VideoLi
 }
 
 func (l *VideoListLogic) VideoList(req *types.VideoListReq) (resp *types.VideoListResp, err error) {
+	vid, _ := l.ctx.Value(types.UserIdKey).(json.Number).Int64()
+	if req.UserId != 0 {
+		vid = req.UserId
+	}
 	res, err := l.svcCtx.VideoRPC.VideoList(l.ctx, &video.VideoListRequest{
-		UserId:   req.UserId,
+		UserId:   vid,
 		Cursor:   req.Cursor,
 		SortType: req.SortType,
+		PageSize: req.PageSize,
 	})
 	if err != nil {
 		logx.Errorf("GetPublishVideoList failed, err: %v", err)
@@ -37,17 +43,20 @@ func (l *VideoListLogic) VideoList(req *types.VideoListReq) (resp *types.VideoLi
 
 	resp = &types.VideoListResp{
 		VideoList: make([]types.VideoInfo, 0),
+		Cursor:    res.Cursor,
+		IsEnd:     res.IsEnd,
+		VideoId:   res.VideoId,
 	}
 	for _, v := range res.VideoList {
 		resp.VideoList = append(resp.VideoList, types.VideoInfo{
 			Id:            v.Id,
 			AuthorId:      v.AuthorId,
+			Title:         v.Title,
 			PlayUrl:       v.PlayUrl,
 			CoverUrl:      v.CoverUrl,
 			FavoriteCount: v.FavoriteCount,
 			CommentCount:  v.CommentCount,
-			IsFavorite:    v.IsFavorite,
-			Title:         v.Title,
+			PublishTime:   v.PublishTime,
 		})
 	}
 	return

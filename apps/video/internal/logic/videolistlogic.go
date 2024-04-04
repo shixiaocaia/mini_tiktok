@@ -108,9 +108,10 @@ func (l *VideoListLogic) VideoList(in *video.VideoListRequest) (*video.VideoList
 			})
 		}
 	} else {
-		// 查询数据库
+		// 缓存不存在，查询数据库
+		// 多个请求到来，阻塞等待返回结果
 		v, err, _ := l.svcCtx.SingleFlightGroup.Do(videosByUserId(in.UserId, in.SortType), func() (interface{}, error) {
-			return l.svcCtx.VideoModel.FindByUserId(l.ctx, in.UserId, in.PageSize, sortField)
+			return l.svcCtx.VideoModel.FindByUserId(l.ctx, in.UserId, types.DefaultLimit, sortField, in.Cursor)
 		})
 		if err != nil {
 			logx.Errorf("VideoModel.FindByUserId userId:%v, pageSize:%v,sortField:%v, err:%v", in.UserId, in.PageSize, sortField, err)
@@ -138,8 +139,6 @@ func (l *VideoListLogic) VideoList(in *video.VideoListRequest) (*video.VideoList
 				PublishTime:   v.PublishTime,
 			})
 		}
-		fmt.Println(err, isCache, isEnd, lastId, cursor)
-
 	}
 
 	if len(curPage) > 0 {
@@ -151,7 +150,20 @@ func (l *VideoListLogic) VideoList(in *video.VideoListRequest) (*video.VideoList
 			cursor = pageLast.FavoriteCount
 		}
 
-		// 去重
+		// 去重，从大到小排序，如果游标相等，且视频ID相等，去掉该视频
+		for k, v := range curPage {
+			if in.SortType == types.SortPublishTime {
+				if v.PublishTime == in.Cursor && v.Id == in.VideoId {
+					curPage = curPage[k+1:]
+					break
+				}
+			} else {
+				if v.FavoriteCount == in.Cursor && v.Id == in.VideoId {
+					curPage = curPage[k+1:]
+					break
+				}
+			}
+		}
 	}
 
 	ret := &video.VideoListResponse{
@@ -180,6 +192,23 @@ func (l *VideoListLogic) VideoList(in *video.VideoListRequest) (*video.VideoList
 
 func (l *VideoListLogic) cacheVideoIds(ctx context.Context, uid, cursor, pageSize int64, sortType int32) ([]int64, error) {
 	key := videosKey(uid, sortType)
+	// 查询缓存是否存在，存在更新键过期时间
+	exists, err := l.svcCtx.BizRedis.ExistsCtx(ctx, key)
+	if err != nil {
+		logx.Errorf("ExistsCtx key: %s error: %v", key, err)
+		return nil, err
+	}
+	if exists {
+		err = l.svcCtx.BizRedis.ExpireCtx(ctx, key, videosExpire)
+		if err != nil {
+			logx.Errorf("ExpireCtx key: %s error: %v", key, err)
+			return nil, err
+		}
+	}
+
+	// 从缓存中按照指定分数范围和数量获取视频 ID 列表，并按照分数从大到小排序
+	// ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
+	// 查询当前游标之前的数据
 	pairs, err := l.svcCtx.BizRedis.ZrevrangebyscoreWithScoresAndLimitCtx(ctx, key, 0, cursor, 0, int(pageSize))
 	if err != nil {
 		logx.Errorf("ZrevrangebyscoreWithScoresAndLimit key: %s, err: %v", key, err)
