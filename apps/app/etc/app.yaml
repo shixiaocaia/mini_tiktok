@@ -32,6 +32,13 @@ VideoRpcConf:
     Key: video.rpc
   Timeout: 10000000
 
+LikeRpcConf:
+  Etcd:
+    Hosts:
+      - 0.0.0.0:2379
+    Key: like.rpc
+  Timeout: 10000000
+
 
 Oss:
   Endpoint: oss-cn-shanghai.aliyuncs.com

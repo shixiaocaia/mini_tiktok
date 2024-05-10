@@ -28,3 +28,8 @@ BizRedis:
   Type: node
   Pass:
   Key:
+
+KqPusherConf:
+  Brokers:
+    - 127.0.0.1:9092
+  Topic: topic-tiktok-like

@@ -1,13 +1,10 @@
 package config
 
 import (
-	"github.com/zeromicro/go-zero/core/stores/redis"
-	"github.com/zeromicro/go-zero/zrpc"
+	"github.com/zeromicro/go-queue/kq"
 )
 
 type Config struct {
-	zrpc.RpcServerConf
-
 	DB struct {
 		DataSource   string
 		MaxOpenConns int `json:",default=10"`
@@ -15,9 +12,5 @@ type Config struct {
 		MaxLifetime  int `json:",default=3600"`
 	}
 
-	BizRedis     redis.RedisConf
-	KqPusherConf struct {
-		Brokers []string
-		Topic   string
-	}
+	KqConsumerConf kq.KqConf
 }

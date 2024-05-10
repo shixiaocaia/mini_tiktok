@@ -19,89 +19,89 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	VideoRPC_LikeAction_FullMethodName = "/like.VideoRPC/LikeAction"
+	LikeRPC_LikeAction_FullMethodName = "/like.LikeRPC/LikeAction"
 )
 
-// VideoRPCClient is the client API for VideoRPC service.
+// LikeRPCClient is the client API for LikeRPC service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type VideoRPCClient interface {
-	LikeAction(ctx context.Context, in *LikeActionRequest, opts ...grpc.CallOption) (*LikeActionResponse, error)
+type LikeRPCClient interface {
+	LikeAction(ctx context.Context, in *LikeActionReq, opts ...grpc.CallOption) (*LikeActionResp, error)
 }
 
-type videoRPCClient struct {
+type likeRPCClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewVideoRPCClient(cc grpc.ClientConnInterface) VideoRPCClient {
-	return &videoRPCClient{cc}
+func NewLikeRPCClient(cc grpc.ClientConnInterface) LikeRPCClient {
+	return &likeRPCClient{cc}
 }
 
-func (c *videoRPCClient) LikeAction(ctx context.Context, in *LikeActionRequest, opts ...grpc.CallOption) (*LikeActionResponse, error) {
-	out := new(LikeActionResponse)
-	err := c.cc.Invoke(ctx, VideoRPC_LikeAction_FullMethodName, in, out, opts...)
+func (c *likeRPCClient) LikeAction(ctx context.Context, in *LikeActionReq, opts ...grpc.CallOption) (*LikeActionResp, error) {
+	out := new(LikeActionResp)
+	err := c.cc.Invoke(ctx, LikeRPC_LikeAction_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// VideoRPCServer is the server API for VideoRPC service.
-// All implementations must embed UnimplementedVideoRPCServer
+// LikeRPCServer is the server API for LikeRPC service.
+// All implementations must embed UnimplementedLikeRPCServer
 // for forward compatibility
-type VideoRPCServer interface {
-	LikeAction(context.Context, *LikeActionRequest) (*LikeActionResponse, error)
-	mustEmbedUnimplementedVideoRPCServer()
+type LikeRPCServer interface {
+	LikeAction(context.Context, *LikeActionReq) (*LikeActionResp, error)
+	mustEmbedUnimplementedLikeRPCServer()
 }
 
-// UnimplementedVideoRPCServer must be embedded to have forward compatible implementations.
-type UnimplementedVideoRPCServer struct {
+// UnimplementedLikeRPCServer must be embedded to have forward compatible implementations.
+type UnimplementedLikeRPCServer struct {
 }
 
-func (UnimplementedVideoRPCServer) LikeAction(context.Context, *LikeActionRequest) (*LikeActionResponse, error) {
+func (UnimplementedLikeRPCServer) LikeAction(context.Context, *LikeActionReq) (*LikeActionResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LikeAction not implemented")
 }
-func (UnimplementedVideoRPCServer) mustEmbedUnimplementedVideoRPCServer() {}
+func (UnimplementedLikeRPCServer) mustEmbedUnimplementedLikeRPCServer() {}
 
-// UnsafeVideoRPCServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to VideoRPCServer will
+// UnsafeLikeRPCServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to LikeRPCServer will
 // result in compilation errors.
-type UnsafeVideoRPCServer interface {
-	mustEmbedUnimplementedVideoRPCServer()
+type UnsafeLikeRPCServer interface {
+	mustEmbedUnimplementedLikeRPCServer()
 }
 
-func RegisterVideoRPCServer(s grpc.ServiceRegistrar, srv VideoRPCServer) {
-	s.RegisterService(&VideoRPC_ServiceDesc, srv)
+func RegisterLikeRPCServer(s grpc.ServiceRegistrar, srv LikeRPCServer) {
+	s.RegisterService(&LikeRPC_ServiceDesc, srv)
 }
 
-func _VideoRPC_LikeAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LikeActionRequest)
+func _LikeRPC_LikeAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LikeActionReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VideoRPCServer).LikeAction(ctx, in)
+		return srv.(LikeRPCServer).LikeAction(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: VideoRPC_LikeAction_FullMethodName,
+		FullMethod: LikeRPC_LikeAction_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VideoRPCServer).LikeAction(ctx, req.(*LikeActionRequest))
+		return srv.(LikeRPCServer).LikeAction(ctx, req.(*LikeActionReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// VideoRPC_ServiceDesc is the grpc.ServiceDesc for VideoRPC service.
+// LikeRPC_ServiceDesc is the grpc.ServiceDesc for LikeRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var VideoRPC_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "like.VideoRPC",
-	HandlerType: (*VideoRPCServer)(nil),
+var LikeRPC_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "like.LikeRPC",
+	HandlerType: (*LikeRPCServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "LikeAction",
-			Handler:    _VideoRPC_LikeAction_Handler,
+			Handler:    _LikeRPC_LikeAction_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

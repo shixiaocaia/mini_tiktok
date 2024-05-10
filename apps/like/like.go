@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"mini_tiktok/pkg/interceptors"
 
 	"mini_tiktok/apps/like/internal/config"
 	"mini_tiktok/apps/like/internal/server"
@@ -26,12 +27,16 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		like.RegisterVideoRPCServer(grpcServer, server.NewVideoRPCServer(ctx))
+		like.RegisterLikeRPCServer(grpcServer, server.NewLikeRPCServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)
 		}
 	})
+
+	// 自定义拦截器
+	s.AddUnaryInterceptors(interceptors.ServerErrorInterceptor())
+
 	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)

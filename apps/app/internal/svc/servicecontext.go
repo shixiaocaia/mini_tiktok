@@ -2,6 +2,7 @@ package svc
 
 import (
 	"mini_tiktok/apps/app/internal/config"
+	"mini_tiktok/apps/like/likerpc"
 	"mini_tiktok/apps/user/userrpc"
 	"mini_tiktok/apps/video/videorpc"
 	"mini_tiktok/pkg/interceptors"
@@ -19,6 +20,7 @@ type ServiceContext struct {
 	Config    config.Config
 	UserRpc   userrpc.UserRPC
 	VideoRPC  videorpc.VideoRPC
+	LikeRPC   likerpc.LikeRPC
 	OssClient *oss.Client
 }
 
@@ -38,11 +40,12 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	// 自定义拦截器
 	userRPC := zrpc.MustNewClient(c.UserRpcConf, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
 	videoRPC := zrpc.MustNewClient(c.VideoRpcConf, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
-
+	likeRPC := zrpc.MustNewClient(c.LikeRpcConf, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
 	return &ServiceContext{
 		Config:    c,
 		UserRpc:   userrpc.NewUserRPC(userRPC),
 		VideoRPC:  videorpc.NewVideoRPC(videoRPC),
+		LikeRPC:   likerpc.NewLikeRPC(likeRPC),
 		OssClient: oc,
 	}
 }

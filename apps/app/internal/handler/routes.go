@@ -4,6 +4,7 @@ package handler
 import (
 	"net/http"
 
+	like "mini_tiktok/apps/app/internal/handler/like"
 	user "mini_tiktok/apps/app/internal/handler/user"
 	video "mini_tiktok/apps/app/internal/handler/video"
 	"mini_tiktok/apps/app/internal/svc"
@@ -73,5 +74,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
 		rest.WithSignature(serverCtx.Config.Signature),
 		rest.WithPrefix("/douyin/video"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/",
+				Handler: like.LikeActionHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
+		rest.WithSignature(serverCtx.Config.Signature),
+		rest.WithPrefix("/douyin/like"),
 	)
 }

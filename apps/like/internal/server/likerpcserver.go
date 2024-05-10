@@ -11,18 +11,18 @@ import (
 	"mini_tiktok/apps/like/like"
 )
 
-type VideoRPCServer struct {
+type LikeRPCServer struct {
 	svcCtx *svc.ServiceContext
-	like.UnimplementedVideoRPCServer
+	like.UnimplementedLikeRPCServer
 }
 
-func NewVideoRPCServer(svcCtx *svc.ServiceContext) *VideoRPCServer {
-	return &VideoRPCServer{
+func NewLikeRPCServer(svcCtx *svc.ServiceContext) *LikeRPCServer {
+	return &LikeRPCServer{
 		svcCtx: svcCtx,
 	}
 }
 
-func (s *VideoRPCServer) LikeAction(ctx context.Context, in *like.LikeActionRequest) (*like.LikeActionResponse, error) {
+func (s *LikeRPCServer) LikeAction(ctx context.Context, in *like.LikeActionReq) (*like.LikeActionResp, error) {
 	l := logic.NewLikeActionLogic(ctx, s.svcCtx)
 	return l.LikeAction(in)
 }

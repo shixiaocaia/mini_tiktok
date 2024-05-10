@@ -1,0 +1,21 @@
+syntax = "v1"
+
+info(
+    title: "点赞实例"
+    desc: "点赞实例"
+    author: "shixiaocaia"
+    email: "shixiaocaia@gmail.com"
+    version: "v1"
+)
+
+type (
+    LikeActionReq{
+        UserId int64 `json:"user_id"`
+        VideoId int64 `json:"video_id"`
+        ActionType int32 `json:"action_type"`
+    }
+    LikeActionResp{
+        Code int32 `json:"code"`
+        Msg string `json:"msg"`
+    }
+)

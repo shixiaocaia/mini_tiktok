@@ -9,6 +9,7 @@ type Config struct {
 	rest.RestConf
 	UserRpcConf  zrpc.RpcClientConf
 	VideoRpcConf zrpc.RpcClientConf
+	LikeRpcConf  zrpc.RpcClientConf
 
 	JwtAuth struct {
 		AccessSecret  string

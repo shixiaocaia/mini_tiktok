@@ -11,6 +11,7 @@ info(
 import (
 	"api/user.api"
 	"api/video.api"
+	"api/like.api"
 )
 
 //============================> userService <============================
@@ -87,16 +88,33 @@ service app{
 
 service app{
 	@doc(
-		summary: "PublishVideo List"
-		description: "PublishVideo List"
+		summary: "VideoList"
+		description: "VideoList"
 	)
 	@handler videoList
 	get /list (VideoListReq) returns (VideoListResp)
 
 	@doc(
-		summary: "PublishVideo request"
-		description: "PublishVideo request"
+		summary: "PublishVideo"
+		description: "PublishVideo"
 	)
 	@handler publish
 	post /publish (PublishVideoReq) returns (PublishVideoResp)
+}
+
+//============================> userService <============================
+@server(
+	prefix: /douyin/like
+	group: like
+	jwt: JwtAuth
+	signature: true
+)
+
+service app{
+	@doc(
+		summary: "LikeAction"
+		description: "LikeActionReq"
+	)
+	@handler likeAction
+	post / (LikeActionReq) returns (LikeActionResp)
 }

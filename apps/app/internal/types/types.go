@@ -93,3 +93,14 @@ type PublishVideoReq struct {
 
 type PublishVideoResp struct {
 }
+
+type LikeActionReq struct {
+	UserId     int64 `json:"user_id"`
+	VideoId    int64 `json:"video_id"`
+	ActionType int32 `json:"action_type"`
+}
+
+type LikeActionResp struct {
+	Code int32  `json:"code"`
+	Msg  string `json:"msg"`
+}

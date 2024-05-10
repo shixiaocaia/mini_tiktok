@@ -5,16 +5,15 @@ option go_package = "./like";
 
 // goctl rpc protoc like.proto --go_out=../ --go-grpc_out=../  --zrpc_out=../
 
-service VideoRPC {
-  rpc LikeAction(LikeActionRequest) returns (LikeActionResponse);
+service LikeRPC {
+  rpc LikeAction(LikeActionReq) returns (LikeActionResp);
 }
 
-message LikeActionRequest {
-  string video_id = 1;
-  string user_id = 2;
-  bool like = 3;
+message LikeActionReq {
+  int64 video_id = 1;
+  int64 user_id = 2;
+  int32 action_type = 3;
 }
 
-message LikeActionResponse {
-  bool success = 1;
+message LikeActionResp {
 }
