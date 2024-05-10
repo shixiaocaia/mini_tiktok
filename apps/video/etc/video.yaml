@@ -5,7 +5,7 @@ Timeout: 1000000
 
 Etcd:
   Hosts:
-  - 0.0.0.0:2379
+    - 127.0.0.1:2379
   Key: video.rpc
 
 Log:
@@ -15,20 +15,20 @@ Log:
   Level: debug
 
 DB:
-  DataSource: "root:tiktok_mysql@tcp(8.217.124.133:3306)/tiktok?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
+  DataSource: "changeMe/tiktok?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
   MaxIdleConns: 10
   MaxOpenConns: 100
   ConnMaxLifetime: 3600
 
 Redis:
-  Host: 8.217.124.133:6379
+  Host: changeMe
   Type: node
   Pass:
   Key:
 
 
 BizRedis:
-  Host: 8.217.124.133:6379
+  Host: changeMe
   Type: node
   Pass:
   Key:
