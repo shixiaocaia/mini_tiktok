@@ -26,12 +26,12 @@ func NewVideoListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *VideoLi
 }
 
 func (l *VideoListLogic) VideoList(req *types.VideoListReq) (resp *types.VideoListResp, err error) {
-	vid, _ := l.ctx.Value(types.UserIdKey).(json.Number).Int64()
+	uid, _ := l.ctx.Value(types.UserIdKey).(json.Number).Int64()
 	if req.UserId != 0 {
-		vid = req.UserId
+		uid = req.UserId
 	}
 	res, err := l.svcCtx.VideoRPC.VideoList(l.ctx, &video.VideoListRequest{
-		UserId:   vid,
+		UserId:   uid,
 		Cursor:   req.Cursor,
 		SortType: req.SortType,
 		PageSize: req.PageSize,

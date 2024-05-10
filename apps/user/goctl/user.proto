@@ -3,7 +3,7 @@ syntax = "proto3";
 package user;
 option go_package="./user";
 
-// goctl rpc protoc user.proto --go_out=../ --go-grpc_out=../  --zrpc_out=../
+// goctl rpc protoc user.proto  --home ../../../template --go_out=../ --go-grpc_out=../  --zrpc_out=../
 
 service UserRPC {
   rpc Ping(Request) returns(Response);

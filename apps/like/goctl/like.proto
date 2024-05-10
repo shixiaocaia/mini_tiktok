@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package like;
+option go_package = "./like";
+
+// goctl rpc protoc like.proto --go_out=../ --go-grpc_out=../  --zrpc_out=../
+
+service VideoRPC {
+  rpc LikeAction(LikeActionRequest) returns (LikeActionResponse);
+}
+
+message LikeActionRequest {
+  string video_id = 1;
+  string user_id = 2;
+  bool like = 3;
+}
+
+message LikeActionResponse {
+  bool success = 1;
+}

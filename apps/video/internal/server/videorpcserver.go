@@ -22,11 +22,6 @@ func NewVideoRPCServer(svcCtx *svc.ServiceContext) *VideoRPCServer {
 	}
 }
 
-func (s *VideoRPCServer) Feed(ctx context.Context, in *video.FeedRequest) (*video.FeedResponse, error) {
-	l := logic.NewFeedLogic(ctx, s.svcCtx)
-	return l.Feed(in)
-}
-
 func (s *VideoRPCServer) VideoList(ctx context.Context, in *video.VideoListRequest) (*video.VideoListResponse, error) {
 	l := logic.NewVideoListLogic(ctx, s.svcCtx)
 	return l.VideoList(in)

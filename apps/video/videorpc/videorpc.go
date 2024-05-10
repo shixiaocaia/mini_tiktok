@@ -13,8 +13,6 @@ import (
 )
 
 type (
-	FeedRequest          = video.FeedRequest
-	FeedResponse         = video.FeedResponse
 	PublishVideoRequest  = video.PublishVideoRequest
 	PublishVideoResponse = video.PublishVideoResponse
 	VideoItem            = video.VideoItem
@@ -22,7 +20,6 @@ type (
 	VideoListResponse    = video.VideoListResponse
 
 	VideoRPC interface {
-		Feed(ctx context.Context, in *FeedRequest, opts ...grpc.CallOption) (*FeedResponse, error)
 		VideoList(ctx context.Context, in *VideoListRequest, opts ...grpc.CallOption) (*VideoListResponse, error)
 		PublishVideo(ctx context.Context, in *PublishVideoRequest, opts ...grpc.CallOption) (*PublishVideoResponse, error)
 	}
@@ -36,11 +33,6 @@ func NewVideoRPC(cli zrpc.Client) VideoRPC {
 	return &defaultVideoRPC{
 		cli: cli,
 	}
-}
-
-func (m *defaultVideoRPC) Feed(ctx context.Context, in *FeedRequest, opts ...grpc.CallOption) (*FeedResponse, error) {
-	client := video.NewVideoRPCClient(m.cli.Conn())
-	return client.Feed(ctx, in, opts...)
 }
 
 func (m *defaultVideoRPC) VideoList(ctx context.Context, in *VideoListRequest, opts ...grpc.CallOption) (*VideoListResponse, error) {
